@@ -25,4 +25,24 @@ install(TARGETS lua luac lua5.1
   LIBRARY DESTINATION "bin"
   ARCHIVE DESTINATION "lib")
 
-install(FILES src/lua.h etc/lua.hpp src/luaconf.h src/lualib.h src/lauxlib.h DESTINATION "include")
+install(FILES
+  src/lua.h
+  etc/lua.hpp
+  src/luaconf.h
+  src/lualib.h
+  src/lauxlib.h
+  DESTINATION "include")
+
+install(FILES
+  doc/contents.html
+  doc/cover.png
+  doc/logo.gif
+  doc/lua.1
+  doc/lua.css
+  doc/lua.html
+  doc/luac.1
+  doc/luac.html
+  doc/manual.css
+  doc/manual.html
+  doc/readme.html
+  DESTINATION "doc")
