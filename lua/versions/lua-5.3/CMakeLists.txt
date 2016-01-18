@@ -11,38 +11,15 @@ SET(SRC_LIB
   src/linit.c src/lutf8lib.c)
 
 add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+
 # Shared library and executables
-add_library(lua5.3 SHARED ${SRC_LIB})
-set_target_properties (lua5.3 PROPERTIES COMPILE_DEFINITIONS LUA_BUILD_AS_DLL)
-
+add_library(lua53 SHARED ${SRC_LIB})
+set_target_properties (lua53 PROPERTIES COMPILE_DEFINITIONS LUA_BUILD_AS_DLL)
 add_executable(lua src/lua.c)
-target_link_libraries(lua lua5.3)
-
+target_link_libraries(lua lua53)
 add_executable(luac src/luac.c ${SRC_LIB})
 
 # Install files
-install(TARGETS lua luac lua5.3
-  RUNTIME DESTINATION "bin"
-  LIBRARY DESTINATION "bin"
-  ARCHIVE DESTINATION "lib")
-
-install(FILES
-  src/lua.h
-  src/lua.hpp
-  src/luaconf.h
-  src/lualib.h
-  src/lauxlib.h
-  DESTINATION "include")
-
-install(FILES
-  doc/contents.html
-  doc/index.css
-  doc/logo.gif
-  doc/lua.1
-  doc/lua.css
-  doc/luac.1
-  doc/manual.css
-  doc/manual.html
-  doc/osi-certified-72x60.png
-  doc/readme.html
-  DESTINATION "doc")
+install(TARGETS lua luac lua53 RUNTIME DESTINATION "bin" LIBRARY DESTINATION "bin" ARCHIVE DESTINATION "lib")
+install(FILES src/lua.h src/lua.hpp src/luaconf.h src/lualib.h src/lauxlib.h DESTINATION "include")
+install(DIRECTORY doc DESTINATION "${CMAKE_INSTALL_PREFIX}")
