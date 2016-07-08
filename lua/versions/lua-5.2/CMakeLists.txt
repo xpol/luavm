@@ -18,7 +18,10 @@ add_executable(lua src/lua.c)
 target_link_libraries(lua lua52)
 add_executable(luac src/luac.c ${SRC_LIB})
 
+set(LUA_INTERPRETER lua.exe CACHE INTERNAL "The name of Lua interpreter executable")
+set(LUA_LIBNAME lua52.lib CACHE INTERNAL "The name of Lua library")
+
 # Install files
-install(TARGETS lua luac lua52 RUNTIME DESTINATION "bin" LIBRARY DESTINATION "bin" ARCHIVE DESTINATION "lib")
-install(FILES src/lua.h src/lua.hpp src/luaconf.h src/lualib.h src/lauxlib.h DESTINATION "include")
+install(TARGETS lua luac lua52 RUNTIME DESTINATION "${LUA_BINDIR}" LIBRARY DESTINATION "${LUA_BINDIR}" ARCHIVE DESTINATION "${LUA_BINDIR}")
+install(FILES src/lua.h src/lua.hpp src/luaconf.h src/lualib.h src/lauxlib.h DESTINATION "${LUA_INCDIR}")
 install(DIRECTORY doc DESTINATION "${CMAKE_INSTALL_PREFIX}")

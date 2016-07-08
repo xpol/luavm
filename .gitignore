@@ -31,8 +31,9 @@
 # Debug files
 *.dSYM/
 
-/lua/versions/lua*/build/
-/lua/versions/luajit-2.*/src/lj_*def.h
-/lua/versions/luajit-2.*/src/host/buildvm_arch.h
-/lua/versions/luajit-2.*/src/jit/vmdef.lua
-/lua/versions/luajit-2.*/src/lua51.exp
+/lua/versions/lua-*/build/
+/lua/versions/luajit-*/src/lj_*def.h
+/lua/versions/luajit-*/src/host/buildvm_arch.h
+/lua/versions/luajit-*/src/jit/vmdef.lua
+/lua/versions/luajit-*/src/lua51.exp
+build/
