@@ -1,0 +1,48 @@
+version: '{build}'
+#os: Visual Studio 2015
+
+configuration:
+- Release
+
+os: Visual Studio 2015 CTP
+version: 1.0.2.{build}
+
+configuration:
+- Debug
+- Release
+
+environment:
+  matrix:
+  - VS_VERSION: 12 2013
+    VS_PLATFORM: win32
+  - VS_VERSION: 12 2013
+    VS_PLATFORM: x64
+  - VS_VERSION: 14 2015
+    VS_PLATFORM: win32
+  - VS_VERSION: 14 2015
+    VS_PLATFORM: x64
+
+before_build:
+- git submodule update --init --recursive
+- cmake -H. -Bbuild -G"Visual Studio %VS_VERSION%" -DCMAKE_GENERATOR_PLATFORM=%VS_PLATFORM% -DCMAKE_INSTALL_PREFIX=%APPVEYOR_BUILD_FOLDER%\installer
+
+build_script:
+- cmake --build build --target install
+
+after_build:
+- 7z a LuaInstaller-%VS_PLATFORM%.zip %APPVEYOR_BUILD_FOLDER%\installer
+
+artifacts:
+  - path: LuaInstaller-%VS_PLATFORM%.zip
+    name: LuaInstaller
+
+deploy:
+  release: myproduct-v$(appveyor_build_version)
+    # Deploy to GitHub Releases
+  - provider: GitHub
+    artifact: LuaInstaller-%VS_PLATFORM%.zip
+    draft: false
+    prerelease: false
+    on:
+      branch: master                # release from master branch only
+      appveyor_repo_tag: true       # deploy on tag push only
