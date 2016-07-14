@@ -49,5 +49,3 @@ deploy:
   artifact: /lua.+installer\.exe/
   draft: true
   prerelease: true
-  on:
-    appveyor_repo_tag: true
