@@ -7,7 +7,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif(NOT CMAKE_BUILD_TYPE)
 
 if (NOT DEFINED WITH_LUA)
-  set(WITH_LUA luajit-2.1 CACHE STRING "Wihci version of Lua to be used? options are: lua-5.1 lua-5.2 lua-5.3 luajit-2.0 or luajit-2.1" FORCE)
+  set(WITH_LUA luajit-2.1 CACHE STRING "Which version of Lua to be used? options are: lua-5.1 lua-5.2 lua-5.3 luajit-2.0 or luajit-2.1" FORCE)
 endif()
 option(WITH_LUAROCKS "Install Luarocks" ON)
 
@@ -64,6 +64,18 @@ set(_VC_VERSION_1800 "12.0")    # Visual Studio 2013
 set(_VC_VERSION_1900 "14.0")    # Visual Studio 2015
 set(VC_VERSION ${_VC_VERSION_${_MSVC_VER}})     # Visual Studio version string in x.y format
 
+# Set required Visual Studio name
+set(_VC_NAME_1200 "6.0")     # Visual Studio 6.0
+set(_VC_NAME_1300 "2002")     # Visual Studio 2002
+set(_VC_NAME_1310 "2003")     # Visual Studio 2003
+set(_VC_NAME_1400 "2005")     # Visual Studio 2005
+set(_VC_NAME_1500 "2008")     # Visual Studio 2008
+set(_VC_NAME_1600 "2010")    # Visual Studio 2010
+set(_VC_NAME_1700 "2012")    # Visual Studio 2012
+set(_VC_NAME_1800 "2013")    # Visual Studio 2013
+set(_VC_NAME_1900 "2015")    # Visual Studio 2015
+set(VC_NAME ${_VC_NAME_${_MSVC_VER}})     # Visual Studio name string
+
 # Set required Windows SDK version for compilation Lua c modules.
 # Only Windows SDK v7.1 and v6.1 shipped with compilers
 # Other versions requires a separate installation of Visual Studio.
@@ -88,6 +100,6 @@ endif(WITH_LUAROCKS)
 add_custom_target(
   pack
   COMMAND "${CMAKE_COMMAND}" --build build --config Release --target install
-  COMMAND "iscc" LuaInstaller.iss /O. /F${WITH_LUA}-${LUA_CPUARCH}-installer
+  COMMAND "iscc" LuaInstaller.iss /O. /F${LUA_VERSION}-vs${VC_NAME}-${LUA_CPUARCH}-installer
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )

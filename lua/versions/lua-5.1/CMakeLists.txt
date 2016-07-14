@@ -21,6 +21,7 @@ add_executable(luac src/luac.c src/print.c ${SRC_LIB})
 
 set(LUA_INTERPRETER lua.exe CACHE INTERNAL "The name of Lua interpreter executable")
 set(LUA_LIBNAME lua51.lib CACHE INTERNAL "The name of Lua library")
+set(LUA_VERSION Lua-5.1.5 CACHE INTERNAL "The version of Lua")
 
 # Install files
 install(TARGETS lua luac lua51 RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}" LIBRARY DESTINATION "${CMAKE_INSTALL_PREFIX}" ARCHIVE DESTINATION "${CMAKE_INSTALL_PREFIX}")
