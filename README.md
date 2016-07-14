@@ -4,8 +4,9 @@ Lua installer for Windows.
 
 ## Prerequiets
 
-1. Install Visual Studio, Visual Studio 2015 or Visual Studio 2013 is recommended.
-2. Insstall CMake.
+1. Install [Visual Studio](https://www.visualstudio.com/downloads/download-visual-studio-vs), Visual Studio 2015 or Visual Studio 2013 is recommended.
+2. Insstall [CMake](https://cmake.org/).
+3. Install [InnoSetup](http://www.jrsoftware.org/isinfo.php).
 
 ## Install
 
