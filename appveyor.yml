@@ -1,8 +1,17 @@
 version: '{build}'
 os: Visual Studio 2015
+clone_depth: 1
 
 configuration:
 - Release
+
+branches:
+  only:
+  - lua-5.1
+  - lua-5.2
+  - lua-5.3
+  - luajit-2.0
+  - luajit-2.1
 
 environment:
   matrix:
@@ -21,16 +30,13 @@ environment:
 
 install:
 - choco install -y curl InnoSetup
--
+- set PATH="C:\Program Files (x86)\Inno Setup 5";%PATH%
 
 before_build:
-- cmake -H. -Bbuild -G"Visual Studio %VS_VERSION% %VS_NAME%" -DCMAKE_GENERATOR_PLATFORM=%VS_PLATFORM% -DCMAKE_INSTALL_PREFIX=build/install
+- cmake -H. -Bbuild -G"Visual Studio %VS_VERSION% %VS_NAME%" -DCMAKE_GENERATOR_PLATFORM=%VS_PLATFORM% -DWITH_LUA=%APPVEYOR_REPO_BRANCH% -DCMAKE_INSTALL_PREFIX=build/install
 
 build_script:
 - cmake --build build --config Release --target pack
-
-after_build:
-- iscc
 
 artifacts:
   - path: lua*installer.exe
