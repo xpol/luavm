@@ -20,8 +20,8 @@ ExternalProject_Add(luajit-2.1
 set(LUA_INTERPRETER luajit.exe CACHE INTERNAL "The name of Lua interpreter executable")
 set(LUA_LIBNAME lua51.lib CACHE INTERNAL "The name of Lua library")
 
-install(FILES src/luajit.exe src/lua51.dll DESTINATION "${LUA_BINDIR}")
-install(DIRECTORY src/jit DESTINATION "${LUA_BINDIR}/lua")
-install(FILES src/lua51.lib DESTINATION "${LUA_LIBDIR}")
-install(FILES src/lua.h src/lua.hpp src/luaconf.h src/lauxlib.h src/lualib.h src/luajit.h DESTINATION "${LUA_INCDIR}")
+install(FILES src/luajit.exe src/lua51.dll DESTINATION "${CMAKE_INSTALL_PREFIX}")
+install(DIRECTORY src/jit DESTINATION "${CMAKE_INSTALL_PREFIX}/lua")
+install(FILES src/lua51.lib DESTINATION "${CMAKE_INSTALL_PREFIX}")
+install(FILES src/lua.h src/lua.hpp src/luaconf.h src/lauxlib.h src/lualib.h src/luajit.h DESTINATION "${CMAKE_INSTALL_PREFIX}/include")
 install(DIRECTORY doc DESTINATION "${CMAKE_INSTALL_PREFIX}")

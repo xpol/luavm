@@ -12,26 +12,26 @@ endif()
 option(WITH_LUAROCKS "Install Luarocks" ON)
 
 
-set(LUA_INCDIR "${CMAKE_INSTALL_PREFIX}/include" CACHE INTERNAL "Directory for the Lua headers")
-set(LUA_LIBDIR "${CMAKE_INSTALL_PREFIX}" CACHE INTERNAL "Directory for Lua library")
-set(LUA_BINDIR "${CMAKE_INSTALL_PREFIX}" CACHE INTERNAL "Directory for Lua interpreter executable")
+set(LUA_INCDIR "HOME/include") # Directory for the Lua headers"
+set(LUA_LIBDIR "HOME") # Directory for Lua library
+set(LUA_BINDIR "HOME") # Directory for Lua interpreter executable
 
 
 set(_UNAME_M_FOR_BYTES_8 "x86_64")
 set(_UNAME_M_FOR_BYTES_4 "x86")
 
 # Configs
-set(LUAROCKS_PREFIX "${CMAKE_INSTALL_PREFIX}")
-set(LUAROCKS_SYSCONFDIR "${CMAKE_INSTALL_PREFIX}")
-set(LUAROCKS_ROCKS_TREE "${CMAKE_INSTALL_PREFIX}")
+set(LUAROCKS_PREFIX "HOME")
+set(LUAROCKS_SYSCONFDIR "HOME")
+set(LUAROCKS_ROCKS_TREE "HOME")
 set(LUAROCKS_ROCKS_SUBDIR "rocks")
 set(LUAROCKS_UNAME_S "WindowsNT")
 set(LUAROCKS_UNAME_M "${_UNAME_M_FOR_BYTES_${CMAKE_SIZEOF_VOID_P}}")
 set(LUAROCKS_DOWNLOADER "wget")
 set(LUAROCKS_MD5CHECKER "md5sum")
-set(LUAROCKS_BINDIR ${LUA_BINDIR})
-set(LUAROCKS_CMODDIR "${CMAKE_INSTALL_PREFIX}/cmod")
-set(LUAROCKS_LUADIR "${CMAKE_INSTALL_PREFIX}/lua")
+set(LUAROCKS_BINDIR "HOME")
+set(LUAROCKS_CMODDIR "HOME/lib")
+set(LUAROCKS_LUADIR "HOME/lua")
 
 
 message("${CMAKE_CXX_COMPILER_VERSION}")
@@ -85,7 +85,9 @@ if(WITH_LUAROCKS)
   add_subdirectory(luarocks)
 endif(WITH_LUAROCKS)
 
-set(CPACK_GENERATOR "7z")
-set(CPACK_GENERATOR_7Z_OPTIONS "-sfx")
-set(CPACK_OUTPUT_FILE_PATH "${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}-${PRODUCT_VERSION}.exe")
-include(CPack)
+add_custom_target(
+  pack
+  COMMAND "${CMAKE_COMMAND}" --build build --config Release --target install
+  COMMAND "iscc" LuaInstaller.iss /O. /F${WITH_LUA}-${LUA_CPUARCH}-installer
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)

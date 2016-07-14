@@ -1,14 +1,7 @@
 version: '{build}'
-#os: Visual Studio 2015
+os: Visual Studio 2015
 
 configuration:
-- Release
-
-os: Visual Studio 2015 CTP
-version: 1.0.2.{build}
-
-configuration:
-- Debug
 - Release
 
 environment:
@@ -22,22 +15,24 @@ environment:
   - VS_VERSION: 14 2015
     VS_PLATFORM: x64
 
+install:
+- choco install -y curl InnoSetup
+
 before_build:
-- git submodule update --init --recursive
-- cmake -H. -Bbuild -G"Visual Studio %VS_VERSION%" -DCMAKE_GENERATOR_PLATFORM=%VS_PLATFORM% -DCMAKE_INSTALL_PREFIX=%APPVEYOR_BUILD_FOLDER%\installer
+- cmake -H. -Bbuild -G"Visual Studio %VS_VERSION%" -DCMAKE_GENERATOR_PLATFORM=%VS_PLATFORM% -DCMAKE_INSTALL_PREFIX=build/install
 
 build_script:
-- cmake --build build --target install
+- cmake --build build --config Release --target install
 
 after_build:
-- 7z a LuaInstaller-%VS_PLATFORM%.zip %APPVEYOR_BUILD_FOLDER%\installer
+- iscc 
 
 artifacts:
   - path: LuaInstaller-%VS_PLATFORM%.zip
     name: LuaInstaller
 
 deploy:
-  release: myproduct-v$(appveyor_build_version)
+  release: LuaInstaller-v$(appveyor_repo_tag)
     # Deploy to GitHub Releases
   - provider: GitHub
     artifact: LuaInstaller-%VS_PLATFORM%.zip

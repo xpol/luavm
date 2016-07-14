@@ -43,11 +43,12 @@ local function write(file, content)
 end
 
 local function relocate(files, oldroot, newroot)
-  local oldroot2, newroot2 = oldroot:gsub('/', '\\'), newroot:gsub('/', '\\')
+  local oldroot2 = oldroot:gsub('/', '\\')
+  newroot = newroot:gsub('\\', '/')
   for _, f in ipairs(files) do
     local text = read(f)
     if text then
-      local relocated = text:gsub(oldroot, newroot):gsub(oldroot2, newroot2)
+      local relocated = text:gsub(oldroot, newroot):gsub(oldroot2, newroot)
       if relocated ~= text then
         print('Relocating:', f)
         write(f, relocated)
@@ -79,6 +80,10 @@ local function get_registry(paths)
   return nil
 end
 
+local function portable_slash(path)
+  return path:gsub('\\', '/')
+end
+
 -- returns the batch command and arg to setup msvc compiler path.
 -- or return 2 empty string (eg. '', '') if not found
 local function get_msvc_env_setup_cmd()
@@ -95,14 +100,14 @@ local function get_msvc_env_setup_cmd()
     -- 1.1. try vcvarsall.bat
     local vcvarsall = vcdir .. 'vcvarsall.bat'
     if exists(vcvarsall) then
-      return vcvarsall, arch
+      return portable_slash(vcvarsall), arch
     end
 
     -- 1.2. try vcvars32.bat / vcvars64.bat
-    local relative_path = arch =='amd64' and 'bin\\amd64\\vcvars64.bat' or 'bin\\vcvars32.bat'
+    local relative_path = arch =='amd64' and 'bin/amd64/vcvars64.bat' or 'bin/vcvars32.bat'
     local full_path = vcdir .. relative_path
     if exists(full_path) then
-      return full_path, ''
+      return portable_slash(full_path), ''
     end
   end
 
@@ -112,9 +117,9 @@ local function get_msvc_env_setup_cmd()
     [[HKLM\Software\Microsoft\Microsoft SDKs\Windows\v@WSDK_VERSION@:InstallationFolder]],
   })
   if wsdkdir then
-    local setenv = wsdkdir..'Bin\\SetEnv.cmd'
+    local setenv = wsdkdir..'Bin/SetEnv.cmd'
     if exists(setenv) then
-      return setenv, arch == 'amd64' and 'x64' or 'x86'
+      return portable_slash(setenv), arch == 'amd64' and 'x64' or 'x86'
     end
   end
 

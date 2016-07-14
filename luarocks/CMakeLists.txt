@@ -12,21 +12,18 @@ configure_file("install/luarocks.bat" "${CMAKE_CURRENT_BINARY_DIR}/src/luarocks.
 configure_file("install/setup.cmd" "${CMAKE_CURRENT_BINARY_DIR}/src/setup.cmd" NEWLINE_STYLE WIN32)
 configure_file("install/setup.lua" "${CMAKE_CURRENT_BINARY_DIR}/src/setup")
 
-install(DIRECTORY DESTINATION ${LUAROCKS_LUADIR})
-install(DIRECTORY DESTINATION ${LUAROCKS_CMODDIR})
-install(DIRECTORY DESTINATION ${LUAROCKS_ROCKS_TREE}/${LUAROCKS_ROCKS_SUBDIR})
-install(DIRECTORY win32/tools DESTINATION "${LUAROCKS_BINDIR}")
-install(DIRECTORY "src/luarocks" DESTINATION "${LUAROCKS_LUADIR}")
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/src/luarocks/site_config.lua" DESTINATION "${LUAROCKS_LUADIR}/luarocks")
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/src/luarocks/config.lua" DESTINATION "${LUAROCKS_SYSCONFDIR}")
+install(DIRECTORY DESTINATION "${CMAKE_INSTALL_PREFIX}/cmod")
+install(DIRECTORY DESTINATION "${CMAKE_INSTALL_PREFIX}/rocks")
+install(DIRECTORY win32/tools DESTINATION "${CMAKE_INSTALL_PREFIX}")
+install(DIRECTORY "src/luarocks" DESTINATION "${CMAKE_INSTALL_PREFIX}/lua")
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/src/luarocks/site_config.lua" DESTINATION "${CMAKE_INSTALL_PREFIX}/lua/luarocks")
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/src/luarocks/config.lua" DESTINATION "${CMAKE_INSTALL_PREFIX}")
 install(FILES
   "src/bin/luarocks"
   "src/bin/luarocks-admin"
-  "${CMAKE_CURRENT_BINARY_DIR}/src/luarocks/config.lua"
   "${CMAKE_CURRENT_BINARY_DIR}/src/luarocks.bat"
   "${CMAKE_CURRENT_BINARY_DIR}/src/setup.cmd"
   "${CMAKE_CURRENT_BINARY_DIR}/src/setup"
-  DESTINATION "${LUAROCKS_BINDIR}")
+  DESTINATION "${CMAKE_INSTALL_PREFIX}")
 
-install(PROGRAMS "${CMAKE_CURRENT_BINARY_DIR}/src/luarocks.bat" DESTINATION "${LUAROCKS_BINDIR}" RENAME luarocks-admin.bat)
-install(CODE "execute_process(COMMAND ${LUAROCKS_BINDIR}/setup.cmd)")
+install(PROGRAMS "${CMAKE_CURRENT_BINARY_DIR}/src/luarocks.bat" DESTINATION "${CMAKE_INSTALL_PREFIX}" RENAME luarocks-admin.bat)

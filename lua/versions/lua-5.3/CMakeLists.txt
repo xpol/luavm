@@ -23,6 +23,6 @@ set(LUA_INTERPRETER lua.exe CACHE INTERNAL "The name of Lua interpreter executab
 set(LUA_LIBNAME lua53.lib CACHE INTERNAL "The name of Lua library")
 
 # Install files
-install(TARGETS lua luac lua53 RUNTIME DESTINATION "${LUA_BINDIR}" LIBRARY DESTINATION "${LUA_BINDIR}" ARCHIVE DESTINATION "${LUA_BINDIR}")
-install(FILES src/lua.h src/lua.hpp src/luaconf.h src/lualib.h src/lauxlib.h DESTINATION "${LUA_INCDIR}")
+install(TARGETS lua luac lua53 RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}" LIBRARY DESTINATION "${CMAKE_INSTALL_PREFIX}" ARCHIVE DESTINATION "${CMAKE_INSTALL_PREFIX}")
+install(FILES src/lua.h src/lua.hpp src/luaconf.h src/lualib.h src/lauxlib.h DESTINATION "${CMAKE_INSTALL_PREFIX}/include")
 install(DIRECTORY doc DESTINATION "${CMAKE_INSTALL_PREFIX}")
