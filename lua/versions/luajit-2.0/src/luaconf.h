@@ -19,7 +19,7 @@
 ** path of the directory of the executable file of the current process.
 */
 #define LUA_LDIR	"!\\lua\\"
-#define LUA_CDIR	"!\\"
+#define LUA_CDIR	"!\\cmod\\"
 #define LUA_PATH_DEFAULT \
   ".\\?.lua;" LUA_LDIR"?.lua;" LUA_LDIR"?\\init.lua;"
 #define LUA_CPATH_DEFAULT \
