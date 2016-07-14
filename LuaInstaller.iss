@@ -15,20 +15,20 @@ InternalCompressLevel=ultra64
 MinVersion=0,6.1
 
 [Files]
-Source: "build\install\config.lua"; DestDir: "{app}"; DestName: "config.lua"
-Source: "build\install\lua*.exe"; DestDir: "{app}"
-Source: "build\install\lua*.dll"; DestDir: "{app}"
-Source: "build\install\lua*.lib"; DestDir: "{app}"
-Source: "build\install\luarocks"; DestDir: "{app}"; DestName: "luarocks"
-Source: "build\install\luarocks-admin"; DestDir: "{app}"; DestName: "luarocks-admin"
-Source: "build\install\luarocks-admin.bat"; DestDir: "{app}"; DestName: "luarocks-admin.bat"
-Source: "build\install\luarocks.bat"; DestDir: "{app}"; DestName: "luarocks.bat"
-Source: "build\install\setup"; DestDir: "{app}"; DestName: "setup"
-Source: "build\install\setup.cmd"; DestDir: "{app}"; DestName: "setup.cmd"
-Source: "build\install\doc\*"; DestDir: "{app}\doc"; Flags: recursesubdirs
-Source: "build\install\include\*"; DestDir: "{app}\include"; Flags: recursesubdirs
-Source: "build\install\lua\*"; DestDir: "{app}\lua"; Flags: recursesubdirs
-Source: "build\install\tools\*"; DestDir: "{app}\tools"; Flags: recursesubdirs
+Source: "config.lua"; DestDir: "{app}"; DestName: "config.lua"
+Source: "lua*.exe"; DestDir: "{app}"
+Source: "lua*.dll"; DestDir: "{app}"
+Source: "lua*.lib"; DestDir: "{app}"
+Source: "luarocks"; DestDir: "{app}"; DestName: "luarocks"
+Source: "luarocks-admin"; DestDir: "{app}"; DestName: "luarocks-admin"
+Source: "luarocks-admin.bat"; DestDir: "{app}"; DestName: "luarocks-admin.bat"
+Source: "luarocks.bat"; DestDir: "{app}"; DestName: "luarocks.bat"
+Source: "setup"; DestDir: "{app}"; DestName: "setup"
+Source: "setup.cmd"; DestDir: "{app}"; DestName: "setup.cmd"
+Source: "doc\*"; DestDir: "{app}\doc"; Flags: recursesubdirs
+Source: "include\*"; DestDir: "{app}\include"; Flags: recursesubdirs
+Source: "lua\*"; DestDir: "{app}\lua"; Flags: recursesubdirs
+Source: "tools\*"; DestDir: "{app}\tools"; Flags: recursesubdirs
 
 [Dirs]
 Name: "{app}\cmod"

@@ -90,6 +90,12 @@ set(_VCVARS_ARG_8 "amd64")
 set(_VCVARS_ARG_4 "x86")
 set(LUA_CPUARCH ${_VCVARS_ARG_${CMAKE_SIZEOF_VOID_P}})
 
+set(_PACKAGE_ARCH_NAME_8 "win64")
+set(_PACKAGE_ARCH_NAME_4 "win32")
+set(PACKAGE_ARCH_NAME ${_PACKAGE_ARCH_NAME_${CMAKE_SIZEOF_VOID_P}})
+
+message("CMAKE_CURRENT_BINARY_DIR: ${CMAKE_CURRENT_BINARY_DIR}")
+set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/install)
 
 add_subdirectory(lua/versions/${WITH_LUA})
 
@@ -97,9 +103,11 @@ if(WITH_LUAROCKS)
   add_subdirectory(luarocks)
 endif(WITH_LUAROCKS)
 
+configure_file("LuaInstaller.iss" "${CMAKE_CURRENT_BINARY_DIR}/install/LuaInstaller.iss")
+
 add_custom_target(
   pack
-  COMMAND "${CMAKE_COMMAND}" --build build --config Release --target install
-  COMMAND "iscc" LuaInstaller.iss /O. /F${LUA_VERSION}-vs${VC_NAME}-${LUA_CPUARCH}-installer
+  COMMAND "${CMAKE_COMMAND}" --build ${CMAKE_CURRENT_BINARY_DIR} --config Release --target install
+  COMMAND "iscc" "${CMAKE_CURRENT_BINARY_DIR}/install/LuaInstaller.iss" /O. /F${LUA_VERSION}-${PACKAGE_ARCH_NAME}-vs${VC_NAME}-installer
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
