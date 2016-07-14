@@ -29,7 +29,7 @@ environment:
     VS_PLATFORM: x64
 
 install:
-- choco install -y curl InnoSetup
+- choco install -y InnoSetup
 - set PATH="C:\Program Files (x86)\Inno Setup 5";%PATH%
 
 before_build:
