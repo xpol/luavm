@@ -11,9 +11,8 @@ Lua installer for Windows.
 ## Install
 
 ```Batch
-cmake -H. -Bbuild -G"Visual Studio 14 2015" -DWITH_LUA=lua-5.1 -DCMAKE_INSTALL_PREFIX=PREFIX
-cmake --build build --config Release --target install
-iscc LuaInstaller.iss /O. /FLuaInstaller.exe
+cmake -H. -Bbuild -G"Visual Studio 14 2015" -DWITH_LUA=lua-5.1
+cmake --build build --config Release --target pack
 ```
 
 Where cmake generator can be one of:
@@ -36,5 +35,3 @@ Where cmake generator can be one of:
 - lua-5.3
 - luajit-2.0
 - luajit-2.1
-
-`CMAKE_INSTALL_PREFIX` is the path to install Lua and LuaRocks.
