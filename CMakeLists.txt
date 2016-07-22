@@ -30,18 +30,10 @@ set(LUAROCKS_BINDIR "HOME")
 set(LUAROCKS_CMODDIR "HOME/lib")
 set(LUAROCKS_LUADIR "HOME/lua")
 
-
-message("${CMAKE_CXX_COMPILER_VERSION}")
-
-
 string(REGEX REPLACE "^([0-9]+)\\.([0-9]).*" "\\1\\2" _MSVC_VER ${CMAKE_CXX_COMPILER_VERSION})
 set(_MSVC_VER "${_MSVC_VER}0")
 
 # Set linked Visual Studio runtime DLL name
-set(_MSVCRT_1200 "MSVCRT")      # Visual Studio 6.0
-set(_MSVCRT_1300 "MSVCR70")     # Visual Studio 2002
-set(_MSVCRT_1310 "MSVCR71")     # Visual Studio 2003
-set(_MSVCRT_1400 "MSVCR80")     # Visual Studio 2005
 set(_MSVCRT_1500 "MSVCR90")     # Visual Studio 2008
 set(_MSVCRT_1600 "MSVCR100")    # Visual Studio 2010
 set(_MSVCRT_1700 "MSVCR110")    # Visual Studio 2012
@@ -50,10 +42,6 @@ set(_MSVCRT_1900 "VCRUNTIME140")# Visual Studio 2015
 set(LUA_MSVCRT "${_MSVCRT_${_MSVC_VER}}")
 
 # Set required Visual Studio version for compilation Lua c modules.
-set(_VC_VERSION_1200 "6.0")     # Visual Studio 6.0
-set(_VC_VERSION_1300 "7.0")     # Visual Studio 2002
-set(_VC_VERSION_1310 "7.1")     # Visual Studio 2003
-set(_VC_VERSION_1400 "8.0")     # Visual Studio 2005
 set(_VC_VERSION_1500 "9.0")     # Visual Studio 2008
 set(_VC_VERSION_1600 "10.0")    # Visual Studio 2010
 set(_VC_VERSION_1700 "11.0")    # Visual Studio 2012
@@ -62,10 +50,6 @@ set(_VC_VERSION_1900 "14.0")    # Visual Studio 2015
 set(VC_VERSION ${_VC_VERSION_${_MSVC_VER}})     # Visual Studio version string in x.y format
 
 # Set required Visual Studio name
-set(_VC_NAME_1200 "6.0")     # Visual Studio 6.0
-set(_VC_NAME_1300 "2002")     # Visual Studio 2002
-set(_VC_NAME_1310 "2003")     # Visual Studio 2003
-set(_VC_NAME_1400 "2005")     # Visual Studio 2005
 set(_VC_NAME_1500 "2008")     # Visual Studio 2008
 set(_VC_NAME_1600 "2010")    # Visual Studio 2010
 set(_VC_NAME_1700 "2012")    # Visual Studio 2012

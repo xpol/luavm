@@ -28,7 +28,7 @@ artifacts:
 
 deploy:
   provider: GitHub
-  description: Release %APPVEYOR_REPO_TAG_NAME%
+  description: Draft Release
   auth_token:
     secure: 9u2iMRO2KmnGYYLq9tqm0su2eY3h9FprKV8600vkNsFVCcM0ukfaZuu6SDGb95a6
   artifact: /LuaInstaller.+\.exe/
