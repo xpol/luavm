@@ -2,6 +2,7 @@
 AppName=Lua
 AppVersion=5.1.5
 DefaultDirName={pf}\Lua
+UsePreviousAppDir=no
 DefaultGroupName=Lua
 UninstallDisplayIcon={app}\lua.exe
 Compression=lzma2/ultra64
