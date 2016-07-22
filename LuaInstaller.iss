@@ -1,7 +1,7 @@
 [Setup]
 AppName=LuaInstaller
 AppVersion=0.1.0
-DefaultDirName={pf}\Lua
+DefaultDirName={@INNO_PF@}\Lua
 UsePreviousAppDir=False
 DefaultGroupName=Lua
 Compression=lzma2/ultra64
