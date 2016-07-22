@@ -23,11 +23,11 @@ Name: "LuaJIT20"; Description: "The LuaJIT 2.0 with LuaRocks"; Types: full
 Name: "LuaJIT21"; Description: "The LuaJIT 2.1 with LuaRocks"; Types: full
 
 [Files]
-Source: "versions\5.1\*"; DestDir: "{app}\versions\5.1"; Flags: ignoreversion recursesubdirs; Components: Lua51
-Source: "versions\5.2\*"; DestDir: "{app}\versions\5.2"; Flags: ignoreversion recursesubdirs; Components: Lua52
-Source: "versions\5.3\*"; DestDir: "{app}\versions\5.3"; Flags: ignoreversion recursesubdirs; Components: Lua53
-Source: "versions\luajit-2.0\*"; DestDir: "{app}\versions\luajit-2.0"; Flags: ignoreversion recursesubdirs; Components: LuaJIT20
-Source: "versions\luajit-2.1\*"; DestDir: "{app}\versions\luajit-2.1"; Flags: ignoreversion recursesubdirs; Components: LuaJIT21
+Source: "versions\5.1\*"; DestDir: "{app}\versions\5.1"; Flags: ignoreversion recursesubdirs; Components: Lua51; Permissions: users-full
+Source: "versions\5.2\*"; DestDir: "{app}\versions\5.2"; Flags: ignoreversion recursesubdirs; Components: Lua52; Permissions: users-full
+Source: "versions\5.3\*"; DestDir: "{app}\versions\5.3"; Flags: ignoreversion recursesubdirs; Components: Lua53; Permissions: users-full
+Source: "versions\luajit-2.0\*"; DestDir: "{app}\versions\luajit-2.0"; Flags: ignoreversion recursesubdirs; Components: LuaJIT20; Permissions: users-full
+Source: "versions\luajit-2.1\*"; DestDir: "{app}\versions\luajit-2.1"; Flags: ignoreversion recursesubdirs; Components: LuaJIT21; Permissions: users-full
 
 [Run]
 Filename: "{app}\versions\5.1\setup.cmd"; Flags: runhidden; Components: Lua51
