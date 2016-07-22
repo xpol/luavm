@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 project(luainstaller)
 
 # We want release compilation by default
@@ -6,9 +6,6 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel." FORCE)
 endif(NOT CMAKE_BUILD_TYPE)
 
-if (NOT DEFINED WITH_LUA)
-  set(WITH_LUA luajit-2.1 CACHE STRING "Which version of Lua to be used? options are: lua-5.1 lua-5.2 lua-5.3 luajit-2.0 or luajit-2.1" FORCE)
-endif()
 option(WITH_LUAROCKS "Install Luarocks" ON)
 
 
@@ -94,20 +91,18 @@ set(_PACKAGE_ARCH_NAME_8 "x64")
 set(_PACKAGE_ARCH_NAME_4 "x86")
 set(PACKAGE_ARCH_NAME ${_PACKAGE_ARCH_NAME_${CMAKE_SIZEOF_VOID_P}})
 
-message("CMAKE_CURRENT_BINARY_DIR: ${CMAKE_CURRENT_BINARY_DIR}")
 set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/install)
+set(LUAINSTALLER_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+include(luarocks/CMakeLists.txt)
 
-add_subdirectory(lua/versions/${WITH_LUA})
 
-if(WITH_LUAROCKS)
-  add_subdirectory(luarocks)
-endif(WITH_LUAROCKS)
+add_subdirectory(lua/versions)
 
-configure_file("LuaInstaller.iss" "${CMAKE_CURRENT_BINARY_DIR}/install/LuaInstaller.iss")
+configure_file("LuaInstaller.iss" "${CMAKE_INSTALL_PREFIX}/LuaInstaller.iss")
 
 add_custom_target(
   pack
   COMMAND "${CMAKE_COMMAND}" --build ${CMAKE_CURRENT_BINARY_DIR} --config Release --target install
-  COMMAND "iscc" "${CMAKE_CURRENT_BINARY_DIR}/install/LuaInstaller.iss" /O. /F${LUA_VERSION}-vs${VC_NAME}-${PACKAGE_ARCH_NAME}-installer
+  COMMAND "iscc" "${CMAKE_INSTALL_PREFIX}/LuaInstaller.iss" /O. /FLuaInstaller-vs${VC_NAME}-${PACKAGE_ARCH_NAME}
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )

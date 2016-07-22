@@ -10,61 +10,27 @@ install:
 - set PATH="C:\Program Files (x86)\Inno Setup 5";%PATH%
 
 before_build:
-- cmake -H. -BLua-5.1.5-vs2013-x64 -G"Visual Studio 12 2013 Win64" -DWITH_LUA=lua-5.1
-- cmake -H. -BLua-5.1.5-vs2013-x86 -G"Visual Studio 12 2013" -DWITH_LUA=lua-5.1
-- cmake -H. -BLua-5.1.5-vs2015-x64 -G"Visual Studio 14 2015 Win64" -DWITH_LUA=lua-5.1
-- cmake -H. -BLua-5.1.5-vs2015-x86 -G"Visual Studio 14 2015" -DWITH_LUA=lua-5.1
-- cmake -H. -BLua-5.2.4-vs2013-x64 -G"Visual Studio 12 2013 Win64" -DWITH_LUA=lua-5.2
-- cmake -H. -BLua-5.2.4-vs2013-x86 -G"Visual Studio 12 2013" -DWITH_LUA=lua-5.2
-- cmake -H. -BLua-5.2.4-vs2015-x64 -G"Visual Studio 14 2015 Win64" -DWITH_LUA=lua-5.2
-- cmake -H. -BLua-5.2.4-vs2015-x86 -G"Visual Studio 14 2015" -DWITH_LUA=lua-5.2
-- cmake -H. -BLua-5.3.3-vs2013-x64 -G"Visual Studio 12 2013 Win64" -DWITH_LUA=lua-5.3
-- cmake -H. -BLua-5.3.3-vs2013-x86 -G"Visual Studio 12 2013" -DWITH_LUA=lua-5.3
-- cmake -H. -BLua-5.3.3-vs2015-x64 -G"Visual Studio 14 2015 Win64" -DWITH_LUA=lua-5.3
-- cmake -H. -BLua-5.3.3-vs2015-x86 -G"Visual Studio 14 2015" -DWITH_LUA=lua-5.3
-- cmake -H. -BLuaJIT-2.0.4-vs2013-x64 -G"Visual Studio 12 2013 Win64" -DWITH_LUA=luajit-2.0
-- cmake -H. -BLuaJIT-2.0.4-vs2013-x86 -G"Visual Studio 12 2013" -DWITH_LUA=luajit-2.0
-- cmake -H. -BLuaJIT-2.0.4-vs2015-x64 -G"Visual Studio 14 2015 Win64" -DWITH_LUA=luajit-2.0
-- cmake -H. -BLuaJIT-2.0.4-vs2015-x86 -G"Visual Studio 14 2015" -DWITH_LUA=luajit-2.0
-- cmake -H. -BLuaJIT-2.1.0-beta2-vs2013-x64 -G"Visual Studio 12 2013 Win64" -DWITH_LUA=luajit-2.1
-- cmake -H. -BLuaJIT-2.1.0-beta2-vs2013-x86 -G"Visual Studio 12 2013" -DWITH_LUA=luajit-2.1
-- cmake -H. -BLuaJIT-2.1.0-beta2-vs2015-x64 -G"Visual Studio 14 2015 Win64" -DWITH_LUA=luajit-2.1
-- cmake -H. -BLuaJIT-2.1.0-beta2-vs2015-x86 -G"Visual Studio 14 2015" -DWITH_LUA=luajit-2.1
+- cmake -H. -Bvs2013-x64 -G"Visual Studio 12 2013 Win64"
+- cmake -H. -Bvs2013-x86 -G"Visual Studio 12 2013"
+- cmake -H. -Bvs2015-x64 -G"Visual Studio 14 2015 Win64"
+- cmake -H. -Bvs2015-x86 -G"Visual Studio 14 2015"
 
 
 
 build_script:
-- cmake --build Lua-5.1.5-vs2013-x64 --config Release --target pack
-- cmake --build Lua-5.1.5-vs2013-x86 --config Release --target pack
-- cmake --build Lua-5.1.5-vs2015-x64 --config Release --target pack
-- cmake --build Lua-5.1.5-vs2015-x86 --config Release --target pack
-- cmake --build Lua-5.2.4-vs2013-x64 --config Release --target pack
-- cmake --build Lua-5.2.4-vs2013-x86 --config Release --target pack
-- cmake --build Lua-5.2.4-vs2015-x64 --config Release --target pack
-- cmake --build Lua-5.2.4-vs2015-x86 --config Release --target pack
-- cmake --build Lua-5.3.3-vs2013-x64 --config Release --target pack
-- cmake --build Lua-5.3.3-vs2013-x86 --config Release --target pack
-- cmake --build Lua-5.3.3-vs2015-x64 --config Release --target pack
-- cmake --build Lua-5.3.3-vs2015-x86 --config Release --target pack
-- cmake --build LuaJIT-2.0.4-vs2013-x64 --config Release --target pack
-- cmake --build LuaJIT-2.0.4-vs2013-x86 --config Release --target pack
-- cmake --build LuaJIT-2.0.4-vs2015-x64 --config Release --target pack
-- cmake --build LuaJIT-2.0.4-vs2015-x86 --config Release --target pack
-- cmake --build LuaJIT-2.1.0-beta2-vs2013-x64 --config Release --target pack
-- cmake --build LuaJIT-2.1.0-beta2-vs2013-x86 --config Release --target pack
-- cmake --build LuaJIT-2.1.0-beta2-vs2015-x64 --config Release --target pack
-- cmake --build LuaJIT-2.1.0-beta2-vs2015-x86 --config Release --target pack
-
-
+- cmake --build vs2013-x64 --config Release --target pack
+- cmake --build vs2013-x86 --config Release --target pack
+- cmake --build vs2015-x64 --config Release --target pack
+- cmake --build vs2015-x86 --config Release --target pack
 
 artifacts:
-  - path: Lua*installer.exe
+  - path: LuaInstaller-vs*.exe
 
 deploy:
   provider: GitHub
   description: Release %APPVEYOR_REPO_TAG_NAME%
   auth_token:
     secure: 9u2iMRO2KmnGYYLq9tqm0su2eY3h9FprKV8600vkNsFVCcM0ukfaZuu6SDGb95a6
-  artifact: /Lua.+installer\.exe/
+  artifact: /LuaInstaller.+\.exe/
   draft: true
   prerelease: true
