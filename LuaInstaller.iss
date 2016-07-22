@@ -22,6 +22,14 @@ Name: "Lua53"; Description: "The Lua 5.3 with LuaRocks"; Types: full
 Name: "LuaJIT20"; Description: "The LuaJIT 2.0 with LuaRocks"; Types: full
 Name: "LuaJIT21"; Description: "The LuaJIT 2.1 with LuaRocks"; Types: full
 
+[Dirs]
+Name: "{app}\versions"; Permissions: users-full
+Name: "{app}\versions\5.1"; Components: Lua51; Permissions: users-full
+Name: "{app}\versions\5.2"; Components: Lua52; Permissions: users-full
+Name: "{app}\versions\5.3"; Components: Lua53; Permissions: users-full
+Name: "{app}\versions\luajit-2.0"; Components: LuaJIT20; Permissions: users-full
+Name: "{app}\versions\luajit-2.1"; Components: LuaJIT21; Permissions: users-full
+
 [Files]
 Source: "versions\5.1\*"; DestDir: "{app}\versions\5.1"; Flags: ignoreversion recursesubdirs; Components: Lua51; Permissions: users-full
 Source: "versions\5.2\*"; DestDir: "{app}\versions\5.2"; Flags: ignoreversion recursesubdirs; Components: Lua52; Permissions: users-full
