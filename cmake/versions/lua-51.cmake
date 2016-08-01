@@ -1,0 +1,46 @@
+set(LIBRARY_FILES
+  ${add_lua_ROOT}/src/lapi.c
+  ${add_lua_ROOT}/src/lcode.c
+  ${add_lua_ROOT}/src/ldebug.c
+  ${add_lua_ROOT}/src/ldo.c
+  ${add_lua_ROOT}/src/ldump.c
+  ${add_lua_ROOT}/src/lfunc.c
+  ${add_lua_ROOT}/src/lgc.c
+  ${add_lua_ROOT}/src/llex.c
+  ${add_lua_ROOT}/src/lmem.c
+  ${add_lua_ROOT}/src/lobject.c
+  ${add_lua_ROOT}/src/lopcodes.c
+  ${add_lua_ROOT}/src/lparser.c
+  ${add_lua_ROOT}/src/lstate.c
+  ${add_lua_ROOT}/src/lstring.c
+  ${add_lua_ROOT}/src/ltable.c
+  ${add_lua_ROOT}/src/ltm.c
+  ${add_lua_ROOT}/src/lundump.c
+  ${add_lua_ROOT}/src/lvm.c
+  ${add_lua_ROOT}/src/lzio.c
+  ${add_lua_ROOT}/src/lauxlib.c
+  ${add_lua_ROOT}/src/lbaselib.c
+  ${add_lua_ROOT}/src/ldblib.c
+  ${add_lua_ROOT}/src/liolib.c
+  ${add_lua_ROOT}/src/lmathlib.c
+  ${add_lua_ROOT}/src/loslib.c
+  ${add_lua_ROOT}/src/ltablib.c
+  ${add_lua_ROOT}/src/lstrlib.c
+  ${add_lua_ROOT}/src/loadlib.c
+  ${add_lua_ROOT}/src/linit.c
+  ${add_lua_ROOT}/src/luaconf.h
+)
+
+set(LUAC_FILES
+  ${add_lua_ROOT}/src/luac.c
+  ${add_lua_ROOT}/src/print.c
+  ${LIBRARY_FILES}
+)
+
+set(LUA_HEADERS
+  ${add_lua_ROOT}/etc/lua.hpp
+  ${add_lua_ROOT}/src/lauxlib.h
+  ${add_lua_ROOT}/src/lua.h
+  ${add_lua_ROOT}/src/luaconf.h
+  ${add_lua_ROOT}/src/lualib.h
+)
