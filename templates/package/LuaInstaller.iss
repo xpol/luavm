@@ -20,7 +20,7 @@ Name: "Lua51"; Description: "The Lua 5.1 with LuaRocks"; Types: full
 Name: "Lua52"; Description: "The Lua 5.2 with LuaRocks"; Types: full
 Name: "Lua53"; Description: "The Lua 5.3 with LuaRocks"; Types: full
 Name: "LuaJIT20"; Description: "The LuaJIT 2.0 with LuaRocks"; Types: full
-Name: "LuaJIT21"; Description: "The LuaJIT 2.1 with LuaRocks"; Types: full; Flags: checkablealone
+Name: "LuaJIT21"; Description: "The LuaJIT 2.1 with LuaRocks"; Types: full; Flags: fixed
 
 [Dirs]
 Name: "{app}\versions"; Permissions: users-full
