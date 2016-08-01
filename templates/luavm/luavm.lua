@@ -1,9 +1,4 @@
 #!/usr/bin/env lua
--- luavm use 5.1.5
--- luavm use luajit-2.1.0
--- luavm versions
-
-
 
 local function run(luafile)
   local chunk = loadfile(luafile)
@@ -11,10 +6,7 @@ local function run(luafile)
   setfenv(chunk, g)
   return g, chunk()
 end
-
-
--- This script must run in the directory of this file.
-
+s
 local function loadvars(luadir)
   local _, site_config = run(luadir..'/lua/luarocks/site_config.lua')
   local g, _ = run(luadir..'/config.lua') -- load variables.MSVCRT as global
