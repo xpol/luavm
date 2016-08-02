@@ -1,6 +1,6 @@
-# luainstaller
+# luavm
 
-Lua installer for Windows.
+Lua Version Manager for Windows.
 
 ## Prerequiets
 
