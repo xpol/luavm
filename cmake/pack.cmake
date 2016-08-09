@@ -8,11 +8,11 @@ set(_PACKAGE_ARCH_NAME_8 "x64")
 set(_PACKAGE_ARCH_NAME_4 "x86")
 set(PACKAGE_ARCH_NAME ${_PACKAGE_ARCH_NAME_${CMAKE_SIZEOF_VOID_P}})
 
-configure_file("${PROJECT_SOURCE_DIR}/templates/package/LuaInstaller.iss" "${CMAKE_INSTALL_PREFIX}/LuaInstaller.iss")
+configure_file("${PROJECT_SOURCE_DIR}/templates/package/LuaVM.iss" "${CMAKE_INSTALL_PREFIX}/LuaVM.iss")
 
 add_custom_target(
   pack
   COMMAND "${CMAKE_COMMAND}" --build ${CMAKE_CURRENT_BINARY_DIR} --config Release --target install
-  COMMAND "iscc" "${CMAKE_INSTALL_PREFIX}/LuaInstaller.iss" /O. /FLuaInstaller-vs${VC_NAME}-${PACKAGE_ARCH_NAME}
+  COMMAND "iscc" "${CMAKE_INSTALL_PREFIX}/LuaVM.iss" /O. /FLuaVM-vs${VC_NAME}-${PACKAGE_ARCH_NAME}
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )

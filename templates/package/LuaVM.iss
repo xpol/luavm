@@ -1,5 +1,5 @@
 [Setup]
-AppName=LuaInstaller
+AppName=LuaVM
 AppVersion=0.1.0
 DefaultDirName={@INNO_PF@}\Lua
 UsePreviousAppDir=False

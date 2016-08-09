@@ -24,13 +24,13 @@ build_script:
 - cmake --build vs2015-x86 --config Release --target pack
 
 artifacts:
-  - path: LuaInstaller-vs*.exe
+  - path: LuaVM-vs*.exe
 
 deploy:
   provider: GitHub
   description: Draft Release
   auth_token:
     secure: 9u2iMRO2KmnGYYLq9tqm0su2eY3h9FprKV8600vkNsFVCcM0ukfaZuu6SDGb95a6
-  artifact: /LuaInstaller.+\.exe/
+  artifact: /LuaVM.+\.exe/
   draft: true
   prerelease: true

@@ -34,6 +34,7 @@
 /lua/versions/luajit-*/src/host/buildvm_arch.h
 /lua/versions/luajit-*/src/jit/vmdef.lua
 /lua/versions/luajit-*/src/lua51.exp
+/lua/versions/luajit-*/src/lua51.dll
+/lua/versions/luajit-*/src/luajit.exe
 /build
-/install
-/*lua*.exe
+/LuaVM*.exe
