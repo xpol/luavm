@@ -1,14 +1,14 @@
 @echo off
 
 :GETTEMPNAME
-SET LUAVMTMPFILE=%TEMP%\luavm-update-session-%RANDOM%.bat
-IF EXIST "%LUAVMTMPFILE%" GOTO :GETTEMPNAME
-echo. > %LUAVMTMPFILE%
+SET SESSION_UPDATE_BATCH=%TEMP%\luavm-update-session-%RANDOM%.bat
+IF EXIST "%SESSION_UPDATE_BATCH%" GOTO :GETTEMPNAME
+echo. > %SESSION_UPDATE_BATCH%
 
 setlocal
-"%~dp0..\versions\luajit-2.1\luajit.exe" "%~dp0luavm.lua" %*
+"%~dp0versions\luajit-2.1\luajit.exe" "%~dp0luavm.lua" %*
 endlocal
 
-call %LUAVMTMPFILE%
-del %LUAVMTMPFILE%
-set LUAVMTMPFILE=
+call %SESSION_UPDATE_BATCH%
+del %SESSION_UPDATE_BATCH%
+set SESSION_UPDATE_BATCH=

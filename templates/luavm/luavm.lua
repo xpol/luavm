@@ -6,7 +6,7 @@ local function run(luafile)
   setfenv(chunk, g)
   return g, chunk()
 end
-s
+
 local function loadvars(luadir)
   local _, site_config = run(luadir..'/lua/luarocks/site_config.lua')
   local g, _ = run(luadir..'/config.lua') -- load variables.MSVCRT as global
@@ -27,7 +27,7 @@ local function loadvars(luadir)
   }
 end
 
-local function scanfiles(bindir)
+local function scan_path_related_files(bindir)
   local rv = {
     bindir..'/lua/luarocks/site_config.lua',
     bindir..'/config.lua',
@@ -56,7 +56,7 @@ local function write(file, content)
   f:close()
 end
 
-local function relocate(files, oldroot, newroot)
+local function relocate_bin_scripts(files, oldroot, newroot)
   local oldroot2 = oldroot:gsub('/', '\\')
   newroot = newroot:gsub('\\', '/')
   for _, f in ipairs(files) do
@@ -95,10 +95,46 @@ local function get_registry(paths)
   return nil
 end
 
-local function set_environment(variable, value)
-  local z = os.execute(('setx "%s" "%s" >NUL'):format(variable, value))
-  return z == 0 or z == true
+
+-- Get environment variable form windows registry or current session
+--   - source: 'machine' or 'user' or 'session'
+--   - varname: the name of environment variable.
+local function getenv(source, varname)
+  if source == 'session' then return os.getenv(varname) end
+
+  local sources = {
+    machine = [[HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment]],
+    user = [[HKCU\Environment]]
+  }
+  local key = sources[source]
+  if not key then error('Unknow environment source: '..source) end
+
+  local h = io.popen('reg query "'..key..'" /v '..varname..' 2>NUL')
+  local output = h:read("*a")
+  h:close()
+  return (output:match("REG_[^%s]+%s+([^\n]+)"))
 end
+
+-- Set environment variable into windows registry or current session
+--   - source: 'machine' or 'user' or 'session'
+--   - varname: the name of environment variable.
+--   - value: the value of environment variable.
+local function setenv(source, varname, value)
+  if source == 'session' then
+    local tempfile = io.open(os.getenv('SESSION_UPDATE_BATCH'), 'w')
+    tempfile:write(('set %s=%s'):format(varname, value))
+    tempfile:close()
+  end
+
+  if source == 'user' then
+    os.execute(('setx "%s" "%s" >NUL'):format(varname, value))
+  end
+
+  if source == 'machine' then
+    os.execute(('setx /M "%s" "%s" >NUL'):format(varname, value))
+  end
+end
+
 
 local function portable_slash(path)
   return path:gsub('\\', '/')
@@ -136,9 +172,9 @@ local function get_msvc_env_setup_cmd(vcver, wsdkver, needs64)
       [[HKLM\Software\Microsoft\Microsoft SDKs\Windows\v]]..wsdkver..[[:InstallationFolder]],
     })
     if wsdkdir then
-      local setenv = wsdkdir..'Bin/SetEnv.cmd'
-      if exists(setenv) then
-        return portable_slash(setenv), needs64 and 'x64' or 'x86'
+      local setenvcmd = wsdkdir..'Bin/SetEnv.cmd'
+      if exists(setenvcmd) then
+        return portable_slash(setenvcmd), needs64 and 'x64' or 'x86'
       end
     end
   end
@@ -156,25 +192,9 @@ local function update_vcvars(file, vccmd, vcarg)
   end
 end
 
-local function path_insert(pathstring, newpath, removefn)
-  local paths = {}
-  local replaced = false
-  for p in pathstring:gmatch('([^;]+)') do
-    if not replaced and removefn(p) then
-      paths[#paths+1] = newpath
-      replaced = true
-    else
-      paths[#paths+1] = p
-    end
-  end
-  if not replaced then
-    table.insert(paths, 1, newpath)
-  end
-  return table.concat(paths, ';')
-end
 
 local function allowed_versions(home)
-  local h = io.popen(([[dir /B "%sversions\*"]]):format(home))
+  local h = io.popen(([[dir /B "%s\versions\*"]]):format(home))
   local versions = {}
   for v in h:lines() do
     versions[v] = true
@@ -188,6 +208,26 @@ local function list(home)
   os.exit(0)
 end
 
+local function filter_path(s, new, fn)
+  local paths = {new}
+  if type(fn) == 'string' then
+    local regx = fn
+    fn = function(p) return (p:find(regx)) end
+  end
+  for p in s:gmatch('([^;]+)') do
+    if not fn(p) then
+      paths[#paths+1] = p
+    end
+  end
+  return table.concat(paths, ';')
+end
+
+local function update_path(sources, newpath, oldregx)
+  for source in sources:gmatch('([^:]+)') do
+    setenv(source, 'Path', filter_path(getenv(source, 'Path'), newpath, oldregx))
+  end
+end
+
 local function use(home, version)
   local versions = allowed_versions(home)
   if not versions[version] then
@@ -196,42 +236,52 @@ local function use(home, version)
     os.exit(1)
   end
 
-  local base = (home..[[versions\]]):lower()
-  local bindir = home..[[versions\]]..version
-  local function is_old_bindir(dir)
-    return dir:sub(1,#base):lower() == base
-  end
+  local bindir = home..[[\versions\]]..version
 
-  -- print[[1. update path in registry]]
-  local path = path_insert(get_registry([[HKCU\Environment:Path]]), bindir, is_old_bindir)
-  set_environment('Path', path)
+  -- print[[1. update path in registry and current session]]
+  update_path('user:session', bindir, '\\luavm\\versions\\[^\\]+$')
 
-  -- print[[2. create batch file to update path in current session]]
-  path = path_insert(os.getenv('Path'), bindir, is_old_bindir)
-  local tempfile = io.open(os.getenv('LUAVMTMPFILE'), 'w')
-  tempfile:write('set PATH='..path)
-
-  -- print[[3. update install directory for lua]]
+  -- print[[3. update install directory for lua bin scripts]]
   local vars = loadvars(bindir)
-  relocate(scanfiles(bindir), vars.PREFIX, bindir:gsub('\\', '/'))
+  relocate_bin_scripts(scan_path_related_files(bindir), vars.PREFIX, bindir:gsub('\\', '/'))
 
   -- print[[4. update visual c++ compiler command for luarocks.]]
   local vccmd, vcarg = get_msvc_env_setup_cmd(vars.VCVER, vars.WSDKVER, vars.CPUARCH:find('64') ~= nil)
   update_vcvars(bindir..[[\luarocks.bat]], vccmd, vcarg)
 end
 
+local function migrate(mode, path)
+  if mode == 'install' then
+    update_path('machine:session', path, '\\luavm$')
+  elseif mode == 'remove' then
+    update_path('machine:session', nil, '\\luavm$')
+    update_path('user:session', nil, '\\luavm\\versions\\[^\\]+$')
+  else
+    print('Usage: luavm migrate install')
+    print('   or: luavm migrate remove')
+    os.exit(1)
+  end
+end
+
 local function main()
-  local home = arg[0]:match([[^([A-Z]:.+\)luavm\luavm.lua$]])
+  local home = arg[0]:match([[^([A-Z]:.+\luavm)\luavm.lua$]])
+
   if not home then
     error('Need to run luavm.lua with full path.')
     os.exit(1)
   end
 
-  if arg[1] == 'use' then
-    use(home, arg[2])
-  elseif arg[1] == 'list' then
-    list(home)
+  local commands = {
+    migrate = function() migrate(arg[2], home) end,
+    list = function() list(home) end,
+    use = function() use(home, arg[2]) end
+  }
+  if not commands[arg[1]] then
+    error(('Unknown command %s.'):format(arg[1]))
+    os.exit(1)
   end
+
+  commands[arg[1]]()
 end
 
 main()

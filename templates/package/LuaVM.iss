@@ -23,43 +23,30 @@ Name: "LuaJIT20"; Description: "The LuaJIT 2.0 with LuaRocks"; Types: full
 Name: "LuaJIT21"; Description: "The LuaJIT 2.1 with LuaRocks"; Types: full; Flags: fixed
 
 [Dirs]
-Name: "{app}\versions"; Permissions: users-full
-Name: "{app}\versions\5.1"; Components: Lua51; Permissions: users-full
-Name: "{app}\versions\5.2"; Components: Lua52; Permissions: users-full
-Name: "{app}\versions\5.3"; Components: Lua53; Permissions: users-full
-Name: "{app}\versions\luajit-2.0"; Components: LuaJIT20; Permissions: users-full
-Name: "{app}\versions\luajit-2.1"; Components: LuaJIT21; Permissions: users-full
+Name: "{app}\luavm\versions"; Permissions: users-full
+Name: "{app}\luavm\versions\5.1"; Components: Lua51; Permissions: users-full
+Name: "{app}\luavm\versions\5.2"; Components: Lua52; Permissions: users-full
+Name: "{app}\luavm\versions\5.3"; Components: Lua53; Permissions: users-full
+Name: "{app}\luavm\versions\luajit-2.0"; Components: LuaJIT20; Permissions: users-full
+Name: "{app}\luavm\versions\luajit-2.1"; Components: LuaJIT21; Permissions: users-full
 
 [Files]
-Source: "versions\5.1\*"; DestDir: "{app}\versions\5.1"; Flags: ignoreversion recursesubdirs; Components: Lua51; Permissions: users-full
-Source: "versions\5.2\*"; DestDir: "{app}\versions\5.2"; Flags: ignoreversion recursesubdirs; Components: Lua52; Permissions: users-full
-Source: "versions\5.3\*"; DestDir: "{app}\versions\5.3"; Flags: ignoreversion recursesubdirs; Components: Lua53; Permissions: users-full
-Source: "versions\luajit-2.0\*"; DestDir: "{app}\versions\luajit-2.0"; Flags: ignoreversion recursesubdirs; Components: LuaJIT20; Permissions: users-full
-Source: "versions\luajit-2.1\*"; DestDir: "{app}\versions\luajit-2.1"; Flags: ignoreversion recursesubdirs; Components: LuaJIT21; Permissions: users-full
 Source: "luavm\*"; DestDir: "{app}\luavm"; Flags: ignoreversion recursesubdirs
+Source: "versions\5.1\*"; DestDir: "{app}\luavm\versions\5.1"; Flags: ignoreversion recursesubdirs; Components: Lua51; Permissions: users-full
+Source: "versions\5.2\*"; DestDir: "{app}\luavm\versions\5.2"; Flags: ignoreversion recursesubdirs; Components: Lua52; Permissions: users-full
+Source: "versions\5.3\*"; DestDir: "{app}\luavm\versions\5.3"; Flags: ignoreversion recursesubdirs; Components: Lua53; Permissions: users-full
+Source: "versions\luajit-2.0\*"; DestDir: "{app}\luavm\versions\luajit-2.0"; Flags: ignoreversion recursesubdirs; Components: LuaJIT20; Permissions: users-full
+Source: "versions\luajit-2.1\*"; DestDir: "{app}\luavm\versions\luajit-2.1"; Flags: ignoreversion recursesubdirs; Components: LuaJIT21; Permissions: users-full
 
-[Code]
-function NeedsAddPath(Param: string): boolean;
-var
-  OrigPath: string;
-begin
-  if not RegQueryStringValue(HKEY_LOCAL_MACHINE,
-    'SYSTEM\CurrentControlSet\Control\Session Manager\Environment',
-    'Path', OrigPath)
-  then begin
-    Result := True;
-    exit;
-  end;
-  // look for the path with leading and trailing semicolon
-  // Pos() returns 0 if not found
-  Result := Pos(';' + Param + ';', ';' + OrigPath + ';') = 0;
-end;
-
-[Registry]
-Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata};{app}\luavm"; Check: NeedsAddPath('{app}\luavm')
 
 [Run]
+Filename: "{app}\luavm\luavm.cmd"; Parameters: "migrate install"; Flags: runhidden
 Filename: "{app}\luavm\luavm.cmd"; Parameters: "use luajit-2.1"; Flags: runhidden
 
+[UninstallRun]
+Filename: "{app}\luavm\luavm.cmd"; Parameters: "migrate remove"; Flags: runhidden
+
 [UninstallDelete]
+Type: filesandordirs; Name: "{app}\luavm\versions"
+Type: filesandordirs; Name: "{app}\luavm"
 Type: filesandordirs; Name: "{app}"
