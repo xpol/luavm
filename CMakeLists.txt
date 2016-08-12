@@ -10,6 +10,8 @@ option(WITH_LUAROCKS "Install Luarocks" ON)
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/install)
 
+execute_process(COMMAND git describe OUTPUT_VARIABLE LUAVM_VERSION)
+
 include(cmake/msvc.cmake) # load msvc variables
 include(cmake/luarocks.cmake)
 include(cmake/lua.cmake)
