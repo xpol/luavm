@@ -19,7 +19,8 @@ configure_file("${PROJECT_SOURCE_DIR}/templates/package/LuaVM.iss" "${CMAKE_INST
 
 add_custom_target(
   installer
-  COMMAND "${CMAKE_COMMAND}" --build ${CMAKE_CURRENT_BINARY_DIR} --config Release --target install
-  COMMAND "${ISCC}" "${CMAKE_INSTALL_PREFIX}/LuaVM.iss" /O. /FLuaVM-vs${VC_NAME}-${PACKAGE_ARCH_NAME}
+  COMMAND "${CMAKE_COMMAND}" --build ${CMAKE_CURRENT_BINARY_DIR} --config Release
+  COMMAND "${CMAKE_COMMAND}" --build ${CMAKE_CURRENT_BINARY_DIR} --config Release --target install > NUL
+  COMMAND "${ISCC}" /Q /O. /FLuaVM-vs${VC_NAME}-${PACKAGE_ARCH_NAME} "${CMAKE_INSTALL_PREFIX}/LuaVM.iss"
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
