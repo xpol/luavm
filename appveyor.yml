@@ -26,12 +26,25 @@ artifacts:
   - path: LuaVM-vs*.exe
 
 deploy:
-  provider: GitHub
+- provider: GitHub
   description: Release of v$(appveyor_build_version)
   auth_token:
     secure: 9u2iMRO2KmnGYYLq9tqm0su2eY3h9FprKV8600vkNsFVCcM0ukfaZuu6SDGb95a6
   artifact: /LuaVM.+\.exe/
-  draft: true
+  draft: false
   prerelease: true
+  on:
+    appveyor_repo_tag: true
+- provider: BinTray
+  username: xpol
+  api_key:
+    secure: b+4yTLIkX5eZxGWyK4gW6atxDSje5+wFa7PwOoMB162Ulvo3TndrmTH2jYGUwzqA
+  subject: xpol
+  repo: luavm
+  package: luavm-development
+  version: v$(appveyor_build_version)
+  publish: true
+  override: true
+  explode: true
   on:
     appveyor_repo_tag: true
