@@ -23,7 +23,7 @@ build_script:
 - cmake --build vs2015-x86 --config Release --target installer
 
 artifacts:
-  - path: LuaVM-vs*.exe
+  - path: LuaVM*.exe
 
 deploy:
 - provider: GitHub
