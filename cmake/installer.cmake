@@ -18,9 +18,16 @@ message("${ISCC}")
 configure_file("${PROJECT_SOURCE_DIR}/templates/package/LuaVM.iss" "${CMAKE_INSTALL_PREFIX}/LuaVM.iss")
 
 add_custom_target(
-  installer
-  COMMAND "${CMAKE_COMMAND}" --build ${CMAKE_CURRENT_BINARY_DIR} --config Release
+  luas
   COMMAND "${CMAKE_COMMAND}" --build ${CMAKE_CURRENT_BINARY_DIR} --config Release --target install > NUL
-  COMMAND "${ISCC}" /Q /O. /FLuaVM-${LUAVM_VERSION}-vs${VC_NAME}-${PACKAGE_ARCH_NAME} "${CMAKE_INSTALL_PREFIX}/LuaVM.iss"
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  COMMENT "building lua binaries"
+)
+
+add_custom_target(
+  installer
+  COMMAND "${ISCC}" /Q /O. /F"LuaVM-${LUAVM_VERSION}-vs${VC_NAME}-${PACKAGE_ARCH_NAME}" "${CMAKE_INSTALL_PREFIX}/LuaVM.iss"
+  DEPENDS luas
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  COMMENT "packing installer"
 )
