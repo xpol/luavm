@@ -1,5 +1,7 @@
 #!/usr/bin/env lua
 
+local VERSION = '@LUAVM_VERSION@'
+
 local function run(luafile)
   local chunk = loadfile(luafile)
   local g = {}
@@ -274,7 +276,8 @@ local function main()
   local commands = {
     migrate = function() migrate(arg[2], home) end,
     list = function() list(home) end,
-    use = function() use(home, arg[2]) end
+    use = function() use(home, arg[2]) end,
+    version = function() print(VERSION) end,
   }
   if not commands[arg[1]] then
     error(('Unknown command %s.'):format(arg[1]))
