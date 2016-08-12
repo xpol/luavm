@@ -7,7 +7,6 @@ configuration:
 
 install:
 - choco install -y InnoSetup
-- set PATH="C:\Program Files (x86)\Inno Setup 5";%PATH%
 
 before_build:
 - cmake -H. -Bvs2013-x64 -G"Visual Studio 12 2013 Win64"
@@ -18,10 +17,10 @@ before_build:
 
 
 build_script:
-- cmake --build vs2013-x64 --config Release --target pack
-- cmake --build vs2013-x86 --config Release --target pack
-- cmake --build vs2015-x64 --config Release --target pack
-- cmake --build vs2015-x86 --config Release --target pack
+- cmake --build vs2013-x64 --config Release --target installer
+- cmake --build vs2013-x86 --config Release --target installer
+- cmake --build vs2015-x64 --config Release --target installer
+- cmake --build vs2015-x86 --config Release --target installer
 
 artifacts:
   - path: LuaVM-vs*.exe

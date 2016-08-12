@@ -21,4 +21,4 @@ add_jit(VERSION 2.0 ABI 51 ROOT ${CMAKE_CURRENT_SOURCE_DIR}/lua/versions/luajit-
 add_jit(VERSION 2.1 ABI 51 ROOT ${CMAKE_CURRENT_SOURCE_DIR}/lua/versions/luajit-2.1)
 
 include(cmake/luavm.cmake)
-include(cmake/pack.cmake)
+include(cmake/installer.cmake)

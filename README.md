@@ -11,8 +11,8 @@ Lua Version Manager for Windows.
 ## Install
 
 ```Batch
-cmake -H. -Bbuild -G"Visual Studio 14 2015"
-cmake --build build --config Release --target pack
+cmake -H. -Bbuild -G"Visual Studio 14 2015 Win64"
+cmake --build build --config Release --target installer
 ```
 
 Where cmake generator can be one of:
