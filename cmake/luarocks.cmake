@@ -25,9 +25,9 @@ function(config_luarocks lua_version lua_interpreter lua_libname)
   set(LUA_INTERPRETER ${lua_interpreter})
   set(LUA_LIBNAME ${lua_libname})
 
-  configure_file("${PROJECT_SOURCE_DIR}/templates/luarocks/site_config.lua" "${CMAKE_CURRENT_BINARY_DIR}/${lua_version}/site_config.lua")
-  configure_file("${PROJECT_SOURCE_DIR}/templates/luarocks/config.lua" "${CMAKE_CURRENT_BINARY_DIR}/${lua_version}/config.lua")
-  configure_file("${PROJECT_SOURCE_DIR}/templates/luarocks/luarocks.bat" "${CMAKE_CURRENT_BINARY_DIR}/${lua_version}/luarocks.bat" NEWLINE_STYLE WIN32)
+  configure_file("${PROJECT_SOURCE_DIR}/luavm/templates/site_config.lua" "${CMAKE_CURRENT_BINARY_DIR}/${lua_version}/site_config.lua")
+  configure_file("${PROJECT_SOURCE_DIR}/luavm/templates/config.lua" "${CMAKE_CURRENT_BINARY_DIR}/${lua_version}/config.lua")
+  configure_file("${PROJECT_SOURCE_DIR}/luavm/templates/luarocks.bat" "${CMAKE_CURRENT_BINARY_DIR}/${lua_version}/luarocks.bat" NEWLINE_STYLE WIN32)
 endfunction()
 
 function(install_luarocks lua_version)
