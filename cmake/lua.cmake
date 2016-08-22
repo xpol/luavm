@@ -68,6 +68,7 @@ function(add_jit)
       ${add_luajit_ROOT}/src/lua${add_luajit_ABI}.dll
       ${add_luajit_ROOT}/src/lua${add_luajit_ABI}.lib
     DESTINATION "${PREFIX}")
+  install(FILES ${add_luajit_ROOT}/src/luajit.exe DESTINATION "${PREFIX}" RENAME lua.exe)
   install(DIRECTORY ${add_luajit_ROOT}/src/jit DESTINATION "${PREFIX}/lua")
   install(FILES ${HEADERS} DESTINATION "${PREFIX}/include")
   install(DIRECTORY ${add_luajit_ROOT}/doc DESTINATION "${PREFIX}")
