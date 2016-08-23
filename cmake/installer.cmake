@@ -13,21 +13,19 @@ set(PF $ENV{${PFNAME}})
 
 find_program(ISCC iscc PATHS "${PF}\\Inno Setup 5" "$ENV{ProgramFiles}\\Inno Setup 5")
 
-message("${ISCC}")
-
 configure_file("${PROJECT_SOURCE_DIR}/luavm/templates/installer.iss" "${CMAKE_INSTALL_PREFIX}/installer.iss")
 
 add_custom_target(
-  luas
-  COMMAND "${CMAKE_COMMAND}" --build ${CMAKE_CURRENT_BINARY_DIR} --config Release --target install > NUL
+  doinstall
+  COMMAND "${CMAKE_COMMAND}" --build ${CMAKE_CURRENT_BINARY_DIR} --config Release --target install
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-  COMMENT "building lua binaries"
+  COMMENT "Building lua binaries"
 )
 
 add_custom_target(
   installer
   COMMAND "${ISCC}" /Q /O. /F"LuaVM-${LUAVM_VERSION}-vs${VC_NAME}-${PACKAGE_ARCH_NAME}" "${CMAKE_INSTALL_PREFIX}/installer.iss"
-  DEPENDS luas
+  DEPENDS doinstall
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-  COMMENT "packing installer"
+  COMMENT "Packing installer"
 )
