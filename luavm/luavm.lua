@@ -272,6 +272,17 @@ local function migrate(mode, path)
   end
 end
 
+local function usage(code)
+  print [=[usage: luavm <command> [<args>]
+
+The commands ares:
+   use        Use speficied version of Lua.
+   list       List all installed versions of Lua.
+   migrate    Install or remove lvm in system PATH.
+]=]
+  os.exit(code or 0)
+end
+
 local function main()
   local home = arg[0]:match([[^([A-Z]:.+\luavm)\luavm.lua$]])
 
@@ -279,6 +290,8 @@ local function main()
     error('Need to run luavm.lua with full path.')
     os.exit(1)
   end
+
+  if not arg[1] then usage() end
 
   local commands = {
     migrate = function() migrate(arg[2], home) end,
