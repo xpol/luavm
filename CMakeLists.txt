@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
-project(luainstaller)
+project(luavm)
 
 # We want release compilation by default
 if(NOT CMAKE_BUILD_TYPE)
