@@ -117,6 +117,13 @@ local function getenv(source, varname)
   return (output:match("REG_[^%s]+%s+([^\n]+)"))
 end
 
+local function execf(fmt,...)
+  local cmd = fmt:format(...)
+  --print(cmd)
+  local r = os.execute(cmd)
+  assert(r == 0 or r == true, 'error while exectue: ' .. cmd)
+end
+
 -- Set environment variable into windows registry or current session
 --   - source: 'machine' or 'user' or 'session'
 --   - varname: the name of environment variable.
@@ -129,11 +136,11 @@ local function setenv(source, varname, value)
   end
 
   if source == 'user' then
-    os.execute(('setx "%s" "%s" >NUL'):format(varname, value))
+    execf('setx "%s" "%s" >NUL', varname, value)
   end
 
   if source == 'machine' then
-    os.execute(('setx /M "%s" "%s" >NUL'):format(varname, value))
+    execf('setx /M "%s" "%s" >NUL', varname, value)
   end
 end
 
