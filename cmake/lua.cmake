@@ -25,12 +25,13 @@ function(add_lua)
 
   # Install files
   set(PREFIX "${CMAKE_INSTALL_PREFIX}/versions/${add_lua_VERSION}")
-  install(TARGETS lua-${add_lua_VERSION} lua-${add_lua_VERSION}.shared luac-${add_lua_VERSION} RUNTIME DESTINATION "${PREFIX}" LIBRARY DESTINATION "${PREFIX}" ARCHIVE DESTINATION "${PREFIX}")
+  set_target_properties(lua-${add_lua_VERSION}.shared lua-${add_lua_VERSION} luac-${add_lua_VERSION}
+    PROPERTIES
+    ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${PREFIX}"
+    LIBRARY_OUTPUT_DIRECTORY_RELEASE "${PREFIX}"
+    RUNTIME_OUTPUT_DIRECTORY_RELEASE "${PREFIX}"
+  )
   install(FILES ${LUA_HEADERS} DESTINATION "${PREFIX}/include")
-  install(DIRECTORY ${add_lua_ROOT}/doc DESTINATION "${PREFIX}")
-
-  # Install luarocks for this Lua version.
-  install_luarocks(${add_lua_VERSION})
 endfunction()
 
 # add_jit(VERSION 2.0 ABI 51 ROOT path/to/luajit)
@@ -71,7 +72,4 @@ function(add_jit)
   install(FILES ${add_luajit_ROOT}/src/luajit.exe DESTINATION "${PREFIX}" RENAME lua.exe)
   install(DIRECTORY ${add_luajit_ROOT}/src/jit DESTINATION "${PREFIX}/lua")
   install(FILES ${HEADERS} DESTINATION "${PREFIX}/include")
-  install(DIRECTORY ${add_luajit_ROOT}/doc DESTINATION "${PREFIX}")
-
-  install_luarocks(${LUA_VERSION})
 endfunction()
