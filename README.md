@@ -15,7 +15,7 @@ Examples appveyor.yml config:
 
 ```yml
 install:
-  - appveyor DownloadFile https://dl.bintray.com/xpol/luavm/LuaVM-0.3.0-vs2015-x64.exe -FileName LuaVM-vs2015-x64.exe
+  - appveyor DownloadFile https://dl.bintray.com/xpol/luavm/LuaVM-0.4.0-vs2015-x64.exe -FileName LuaVM-vs2015-x64.exe
   - LuaVM-vs2015-x64.exe /verysilent /dir=C:\luavm
 ```
 
