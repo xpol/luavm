@@ -248,7 +248,7 @@ local function use(home, version)
   local bindir = home..[[\versions\]]..version
 
   -- print[[1. update path in registry and current session]]
-  update_path('user:session', bindir, '\\luavm\\versions\\[^\\]+$')
+  update_path('user:session', bindir, '\\LuaVM\\versions\\[^\\]+$')
 
   -- print[[3. update install directory for lua bin scripts]]
   local vars = loadvars(bindir)
@@ -261,10 +261,10 @@ end
 
 local function migrate(mode, path)
   if mode == 'install' then
-    update_path('machine:session', path, '\\luavm$')
+    update_path('user:session', path, '\\LuaVM$')
   elseif mode == 'remove' then
-    update_path('machine:session', nil, '\\luavm$')
-    update_path('user:session', nil, '\\luavm\\versions\\[^\\]+$')
+    update_path('user:session', nil, '\\LuaVM$')
+    update_path('user:session', nil, '\\LuaVM\\versions\\[^\\]+$')
   else
     print('Usage: luavm migrate install')
     print('   or: luavm migrate remove')
@@ -284,7 +284,7 @@ The commands ares:
 end
 
 local function main()
-  local home = arg[0]:match([[^([A-Z]:.+\luavm)\luavm.lua$]])
+  local home = arg[0]:match([[^([A-Z]:.+\LuaVM)\luavm.lua$]])
 
   if not home then
     error('Need to run luavm.lua with full path.')
