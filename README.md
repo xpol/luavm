@@ -42,10 +42,10 @@ For LuaJIT versions there is also `luajit.exe` in PATH.
 
 ## Development
 
-### Prerequiets
+### Prerequisites
 
 1. Install [Visual Studio](https://www.visualstudio.com/downloads/download-visual-studio-vs), Visual Studio 2015 or Visual Studio 2013 is recommended.
-2. Insstall [CMake](https://cmake.org/).
+2. Install [CMake](https://cmake.org/).
 3. Install [InnoSetup](http://www.jrsoftware.org/isinfo.php) and make sure `iscc` is in your PATH.
 
 ### Build
