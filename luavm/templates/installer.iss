@@ -1,6 +1,6 @@
 [Setup]
 AppName=LuaVM
-AppVersion=0.1.0
+AppVersion=@LUAVM_VERSION@
 DefaultDirName={localappdata}\LuaVM
 DisableDirPage=yes
 UsePreviousAppDir=False
