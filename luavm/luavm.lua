@@ -98,7 +98,7 @@ local function get_registry(paths)
 end
 
 
--- Get environment variable form windows registry or current session
+-- Get environment variable from windows registry or current session
 --   - source: 'machine' or 'user' or 'session'
 --   - varname: the name of environment variable.
 local function getenv(source, varname)
@@ -109,7 +109,7 @@ local function getenv(source, varname)
     user = [[HKCU\Environment]]
   }
   local key = sources[source]
-  if not key then error('Unknow environment source: '..source) end
+  if not key then error('Unknown environment source: '..source) end
 
   local h = io.popen('reg query "'..key..'" /v '..varname..' 2>NUL')
   local output = h:read("*a")
@@ -121,7 +121,7 @@ local function execf(fmt,...)
   local cmd = fmt:format(...)
   --print(cmd)
   local r = os.execute(cmd)
-  assert(r == 0 or r == true, 'error while exectue: ' .. cmd)
+  assert(r == 0 or r == true, 'error while executing: ' .. cmd)
 end
 
 -- Set environment variable into windows registry or current session
@@ -240,7 +240,7 @@ end
 local function use(home, version)
   local versions = allowed_versions(home)
   if not versions[version] then
-    io.stderr:write(('invliad version: "%s"\n'):format(version))
+    io.stderr:write(('invalid version: "%s"\n'):format(version))
     io.stderr:write(('installed versions: \n  "%s"\n'):format(table.concat(versions, '\n  ')))
     os.exit(1)
   end
@@ -275,10 +275,10 @@ end
 local function usage(code)
   print [=[usage: luavm <command> [<args>]
 
-The commands ares:
-   use        Use speficied version of Lua.
+The commands are:
+   use        Use specified version of Lua.
    list       List all installed versions of Lua.
-   migrate    Install or remove lvm in system PATH.
+   migrate    Install or remove luavm in system PATH.
 ]=]
   os.exit(code or 0)
 end
