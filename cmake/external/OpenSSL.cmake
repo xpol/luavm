@@ -11,8 +11,8 @@ if(CMAKE_SIZEOF_VOID_P EQUAL 8)
         URL_HASH SHA256=${OpenSSL_SHA256}
         CONFIGURE_COMMAND perl Configure VC-WIN64A "--prefix=${OpenSSL_PREFIX}"
         BUILD_IN_SOURCE 1
-        BUILD_COMMAND "ms\\do_win64a.bat"
-            COMMAND nmake -f "ms\\ntdll.mak"
+        BUILD_COMMAND "ms\\do_win64a.bat" >NUL
+            COMMAND nmake -S -f "ms\\ntdll.mak"
         INSTALL_COMMAND nmake -f "ms\\ntdll.mak" install
     )
 else()
@@ -22,9 +22,9 @@ else()
         URL_HASH SHA256=${OpenSSL_SHA256}
         CONFIGURE_COMMAND perl Configure VC-WIN32 "--prefix=${OpenSSL_PREFIX}"
         BUILD_IN_SOURCE 1
-        BUILD_COMMAND "ms\\do_ms.bat"
-            COMMAND "ms\\do_nasm.bat"
-            COMMAND nmake -f "ms\\ntdll.mak"
+        BUILD_COMMAND "ms\\do_ms.bat" >NUL
+            COMMAND "ms\\do_nasm.bat" >NUL
+            COMMAND nmake -S -f "ms\\ntdll.mak"
         INSTALL_COMMAND nmake -f "ms\\ntdll.mak" install
     )
 endif()
