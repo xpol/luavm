@@ -266,8 +266,10 @@ end
 local function migrate(mode, path)
   if mode == 'install' then
     update_path('user:session', path, '\\LuaVM$')
+    update_path('user:session', path..'\\externals\\bin', '\\LuaVM\\externals\\bin$')
   elseif mode == 'remove' then
     update_path('user:session', nil, '\\LuaVM$')
+    update_path('user:session', nil, '\\LuaVM\\externals\\bin$')
     update_path('user:session', nil, '\\LuaVM\\versions\\[^\\]+$')
   else
     print('Usage: luavm migrate install')
