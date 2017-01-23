@@ -6,6 +6,7 @@ configuration:
 
 install:
 - choco install -y InnoSetup
+- choco install nasm
 
 before_build:
 - cmake -H. -Bvs2013-x64 -G"Visual Studio 12 2013 Win64"
