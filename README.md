@@ -48,6 +48,13 @@ For LuaJIT versions there is also `luajit.exe` in PATH.
 2. Install [CMake](https://cmake.org/).
 3. Install [InnoSetup](http://www.jrsoftware.org/isinfo.php) and make sure `iscc` is in your PATH.
 
+The follow items are required by building OpenSSL:
+
+1. Install [NASM](http://www.nasm.us/) and make sure `nasm` is in your PATH.
+2. Install [Python 2.7/3.x](http://python.org/) and make sure `python` is in your PATH.
+3. Install [7zip](http://www.7-zip.org/).
+4. Install [Perl](http://www.activestate.com/activeperl/downloads).
+
 ### Build
 
 To build and create installer in the project root directory:
