@@ -8,14 +8,14 @@ Lua Version Manager for Windows.
 ## Install
 
 1. Download installer from [GitHub](https://github.com/xpol/luavm/releases) or [Bintray](https://bintray.com/xpol/luavm/luavm-development#files).
-2. Double click to install or form command line `LuaVM-x.y.z-vs[2015|2013]-x[64|86].exe /verysilent /dir=path\to\install`.
+2. Double click to install or form command line `LuaVM-x.y.z-vs[2015|2013]-x[64|86].exe /verysilent`.
 
 
 Examples appveyor.yml config:
 
 ```yml
 install:
-  - appveyor DownloadFile https://dl.bintray.com/xpol/luavm/LuaVM-0.4.0-vs2015-x64.exe -FileName LuaVM-vs2015-x64.exe
+  - appveyor DownloadFile https://dl.bintray.com/xpol/luavm/LuaVM-0.5.0-vs2015-x64.exe -FileName LuaVM-vs2015-x64.exe
   - LuaVM-vs2015-x64.exe /verysilent
   - set PATH=%LocalAppData%\LuaVM;%PATH%
   - luavm use 5.3
