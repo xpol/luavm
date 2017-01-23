@@ -21,6 +21,7 @@ function(config_luarocks lua_version lua_interpreter lua_libname)
   set(LUAROCKS_BINDIR "HOME")
   set(LUAROCKS_CMODDIR "HOME/cmod")
   set(LUAROCKS_LUADIR "HOME/lua")
+  set(LUAROCKS_EXTERNAL_DEPS_DIR "HOME/../../externals")
 
   set(LUA_INTERPRETER ${lua_interpreter})
   set(LUA_LIBNAME ${lua_libname})

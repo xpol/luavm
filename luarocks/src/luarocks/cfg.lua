@@ -173,17 +173,17 @@ else
 end
 
 -- Create global environment for the config files;
-local env_for_config_file = function() 
-   local e 
+local env_for_config_file = function()
+   local e
    e = {
       home = cfg.home,
       lua_version = cfg.lua_version,
       platforms = util.make_shallow_copy(cfg.platforms),
       processor = cfg.target_cpu,   -- remains for compat reasons
       target_cpu = cfg.target_cpu,  -- replaces `processor`
-      os_getenv = os.getenv, 
+      os_getenv = os.getenv,
       dump_env = function()
-         -- debug function, calling it from a config file will show all 
+         -- debug function, calling it from a config file will show all
          -- available globals to that config file
          print(util.show_table(e, "global environment"))
       end,
@@ -203,7 +203,7 @@ local merge_overrides = function(overrides)
    util.deep_merge(cfg, overrides)
 end
 
--- load config file from a list until first succesful one. Info is 
+-- load config file from a list until first succesful one. Info is
 -- added to `cfg` module table, returns filepath of succesfully loaded
 -- file or nil if it failed
 local load_config_file = function(list)
@@ -225,7 +225,7 @@ end
 
 
 -- Load system configuration file
-do 
+do
    sys_config_file_default = sys_config_dir.."/config-"..cfg.lua_version..".lua"
    sys_config_file = load_config_file({
       site_config.LUAROCKS_SYSCONFIG or sys_config_file_default,
@@ -236,18 +236,18 @@ end
 
 -- Load user configuration file (if allowed)
 if not site_config.LUAROCKS_FORCE_CONFIG then
-  
+
    home_config_file_default = home_config_dir.."/config-"..cfg.lua_version..".lua"
-   
+
    local config_env_var   = "LUAROCKS_CONFIG_" .. version_suffix
    local config_env_value = os.getenv(config_env_var)
    if not config_env_value then
       config_env_var   = "LUAROCKS_CONFIG"
       config_env_value = os.getenv(config_env_var)
    end
-   
+
    -- first try environment provided file, so we can explicitly warn when it is missing
-   if config_env_value then 
+   if config_env_value then
       local list = { config_env_value }
       home_config_file = load_config_file(list)
       home_config_ok = (home_config_file ~= nil)
@@ -428,20 +428,36 @@ local defaults = {
    rocks_provided = {}
 }
 
+local function portable_slash(p)
+   return p and p:gsub("\\", "/")
+end
+
+local function make_search_path(...)
+   local dirs = {}
+   for _, p in ipairs({...}) do
+      if type(p) == 'string' then
+         p = portable_slash(p)
+         if p:sub(-1, -1) ~= '/' then p = p..'/' end
+         dirs[#dirs+1] = p
+      end
+   end
+   return dirs
+end
+
 if cfg.platforms.windows then
    local full_prefix = (site_config.LUAROCKS_PREFIX or (os.getenv("PROGRAMFILES")..[[\LuaRocks]]))
    extra_luarocks_module_dir = full_prefix.."/lua/?.lua"
 
    home_config_file = home_config_file and home_config_file:gsub("\\","/")
    defaults.fs_use_modules = false
-   defaults.arch = "win32-"..cfg.target_cpu 
+   defaults.arch = "win32-"..cfg.target_cpu
    defaults.lib_extension = "dll"
    defaults.external_lib_extension = "dll"
    defaults.obj_extension = "obj"
-   defaults.external_deps_dirs = { "c:/external/" }
-   defaults.variables.LUA_BINDIR = site_config.LUA_BINDIR and site_config.LUA_BINDIR:gsub("\\", "/") or "c:/lua"..cfg.lua_version.."/bin"
-   defaults.variables.LUA_INCDIR = site_config.LUA_INCDIR and site_config.LUA_INCDIR:gsub("\\", "/") or "c:/lua"..cfg.lua_version.."/include"
-   defaults.variables.LUA_LIBDIR = site_config.LUA_LIBDIR and site_config.LUA_LIBDIR:gsub("\\", "/") or "c:/lua"..cfg.lua_version.."/lib"
+   defaults.external_deps_dirs = make_search_path(site_config.LUAROCKS_EXTERNAL_DEPS_DIR, "c:/external/")
+   defaults.variables.LUA_BINDIR = portable_slash(site_config.LUA_BINDIR) or "c:/lua"..cfg.lua_version.."/bin"
+   defaults.variables.LUA_INCDIR = portable_slash(site_config.LUA_INCDIR) or "c:/lua"..cfg.lua_version.."/include"
+   defaults.variables.LUA_LIBDIR = portable_slash(site_config.LUA_LIBDIR) or "c:/lua"..cfg.lua_version.."/lib"
 
    defaults.makefile = "Makefile.win"
    defaults.variables.MAKE = "nmake"
@@ -516,7 +532,7 @@ if cfg.platforms.unix then
    defaults.lib_extension = "so"
    defaults.external_lib_extension = "so"
    defaults.obj_extension = "o"
-   defaults.external_deps_dirs = { "/usr/local", "/usr" }
+   defaults.external_deps_dirs = make_search_path(site_config.LUAROCKS_EXTERNAL_DEPS_DIR, "/usr/local", "/usr")
    defaults.variables.LUA_BINDIR = site_config.LUA_BINDIR or "/usr/local/bin"
    defaults.variables.LUA_INCDIR = site_config.LUA_INCDIR or "/usr/local/include"
    defaults.variables.LUA_LIBDIR = site_config.LUA_LIBDIR or "/usr/local/lib"

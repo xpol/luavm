@@ -24,6 +24,7 @@ Name: "Lua52"; Description: "The Lua 5.2 with LuaRocks"; Types: full
 Name: "Lua53"; Description: "The Lua 5.3 with LuaRocks"; Types: full
 Name: "JIT20"; Description: "The LuaJIT 2.0 with LuaRocks"; Types: full
 Name: "JIT21"; Description: "The LuaJIT 2.1 with LuaRocks"; Types: full; Flags: fixed
+Name: "Libraries"; Description: "External libraries required to build some binary rocks"; Types: full; Flags: fixed
 
 [Dirs]
 Name: "{app}\versions"
@@ -46,6 +47,8 @@ Components: JIT20; Name: "{app}\versions\luajit-2.0\rocks"
 Components: JIT21; Name: "{app}\versions\luajit-2.1"
 Components: JIT21; Name: "{app}\versions\luajit-2.1\cmod"
 Components: JIT21; Name: "{app}\versions\luajit-2.1\rocks"
+
+Components: Libraries; Name: "{app}\externals"
 
 [Files]
 Source: "luavm\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
@@ -87,6 +90,8 @@ Components: JIT21; Source: "@PROJECT_SOURCE_DIR@\luarocks\win32\tools\*"; DestDi
 Components: JIT21; Source: "@PROJECT_SOURCE_DIR@\luarocks\src\luarocks\*"; DestDir: "{app}\versions\luajit-2.1\lua\luarocks"; Flags: recursesubdirs
 Components: JIT21; Source: "@PROJECT_SOURCE_DIR@\luarocks\src\bin\*"; DestDir: "{app}\versions\luajit-2.1"
 
+Components: Libraries; Source: "externals\*"; DestDir: "{app}\externals"; Flags: recursesubdirs
+
 [Run]
 Filename: "{app}\luavm.cmd"; Parameters: "migrate install"; Flags: runhidden
 Filename: "{app}\luavm.cmd"; Parameters: "use luajit-2.1"; Flags: runhidden
@@ -95,6 +100,7 @@ Filename: "{app}\luavm.cmd"; Parameters: "use luajit-2.1"; Flags: runhidden
 Filename: "{app}\luavm.cmd"; Parameters: "migrate remove"; Flags: runhidden
 
 [UninstallDelete]
+Type: filesandordirs; Name: "{app}\externals"
 Type: filesandordirs; Name: "{app}\versions"
 Type: filesandordirs; Name: "{app}\uninst"
 Type: filesandordirs; Name: "{app}"

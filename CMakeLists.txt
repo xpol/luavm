@@ -21,5 +21,8 @@ add_lua(VERSION 5.3 ABI 53 ROOT ${CMAKE_CURRENT_SOURCE_DIR}/lua/versions/lua-5.3
 add_jit(VERSION 2.0 ABI 51 ROOT ${CMAKE_CURRENT_SOURCE_DIR}/lua/versions/luajit-2.0)
 add_jit(VERSION 2.1 ABI 51 ROOT ${CMAKE_CURRENT_SOURCE_DIR}/lua/versions/luajit-2.1)
 
+include(cmake/external/OpenSSL.cmake)
+include(cmake/external/ZLIB.cmake)
+
 include(cmake/luavm.cmake)
 include(cmake/installer.cmake)
