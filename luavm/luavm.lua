@@ -97,6 +97,9 @@ local function get_registry(paths)
   return nil
 end
 
+local function trim_path(s)
+  return s:match'^["%s]*(.-)["%s]*$' or ''
+end
 
 -- Get environment variable from windows registry or current session
 --   - source: 'machine' or 'user' or 'session'
@@ -224,6 +227,7 @@ local function filter_path(s, new, fn)
     fn = function(p) return (p:find(regx)) end
   end
   for p in s:gmatch('([^;]+)') do
+    p = trim_path(p)
     if not fn(p) then
       paths[#paths+1] = p
     end
