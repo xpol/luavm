@@ -5,8 +5,9 @@ configuration:
 - Release
 
 install:
-- choco install -y InnoSetup
-- choco install nasm
+- choco install InnoSetup -y
+- choco install nasm --x86 -y
+- set PATH=C:\Program Files (x86)\NASM;%PATH%
 
 before_build:
 - cmake -H. -Bvs2013-x64 -G"Visual Studio 12 2013 Win64"
