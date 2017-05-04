@@ -19,39 +19,39 @@ environment:
       GENERATOR: Visual Studio 15 2017
 
 install:
-- choco install InnoSetup -y
-- choco install nasm --x86 -y
-- set PATH=C:\Program Files (x86)\NASM;%PATH%
+  - choco install InnoSetup -y
+  - choco install nasm --x86 -y
+  - set PATH=C:\Program Files (x86)\NASM;%PATH%
 
 before_build:
-- cmake -H. -Bbuild -G"%GENERATOR%"
+  - cmake -H. -Bbuild -G"%GENERATOR%"
 
 build_script:
-- cmake --build build --config Release --target installer
+  - cmake --build build --config Release --target installer
 
 artifacts:
   - path: LuaVM*.exe
 
 deploy:
-- provider: GitHub
-  description: Release of v$(APPVEYOR_REPO_TAG_NAME)
-  auth_token:
-    secure: 9u2iMRO2KmnGYYLq9tqm0su2eY3h9FprKV8600vkNsFVCcM0ukfaZuu6SDGb95a6
-  artifact: /LuaVM.+\.exe/
-  draft: false
-  prerelease: true
-  on:
-    appveyor_repo_tag: true
-- provider: BinTray
-  username: xpol
-  api_key:
-    secure: b+4yTLIkX5eZxGWyK4gW6atxDSje5+wFa7PwOoMB162Ulvo3TndrmTH2jYGUwzqA
-  subject: xpol
-  repo: luavm
-  package: luavm-development
-  version: v$(APPVEYOR_REPO_TAG_NAME)
-  publish: true
-  override: true
-  explode: true
-  on:
-    appveyor_repo_tag: true
+  - provider: GitHub
+    description: Release of v$(APPVEYOR_REPO_TAG_NAME)
+    auth_token:
+      secure: 9u2iMRO2KmnGYYLq9tqm0su2eY3h9FprKV8600vkNsFVCcM0ukfaZuu6SDGb95a6
+    artifact: /LuaVM.+\.exe/
+    draft: false
+    prerelease: true
+    on:
+      appveyor_repo_tag: true
+  - provider: BinTray
+    username: xpol
+    api_key:
+      secure: b+4yTLIkX5eZxGWyK4gW6atxDSje5+wFa7PwOoMB162Ulvo3TndrmTH2jYGUwzqA
+    subject: xpol
+    repo: luavm
+    package: luavm-development
+    version: v$(APPVEYOR_REPO_TAG_NAME)
+    publish: true
+    override: true
+    explode: true
+    on:
+      appveyor_repo_tag: true
