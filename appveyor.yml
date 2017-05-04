@@ -1,8 +1,22 @@
 version: '{build}'
-os: Visual Studio 2015
 
 configuration:
 - Release
+
+environment:
+  matrix:
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+      GENERATOR: Visual Studio 12 2013 Win64
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+      GENERATOR: Visual Studio 12 2013
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      GENERATOR: Visual Studio 14 2015 Win64
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      GENERATOR: Visual Studio 14 2015
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      GENERATOR: Visual Studio 15 2017 Win64
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      GENERATOR: Visual Studio 15 2017
 
 install:
 - choco install InnoSetup -y
@@ -10,18 +24,10 @@ install:
 - set PATH=C:\Program Files (x86)\NASM;%PATH%
 
 before_build:
-- cmake -H. -Bvs2013-x64 -G"Visual Studio 12 2013 Win64"
-- cmake -H. -Bvs2013-x86 -G"Visual Studio 12 2013"
-- cmake -H. -Bvs2015-x64 -G"Visual Studio 14 2015 Win64"
-- cmake -H. -Bvs2015-x86 -G"Visual Studio 14 2015"
-
-
+- cmake -H. -Bbuild -G"%GENERATOR%"
 
 build_script:
-- cmake --build vs2013-x64 --config Release --target installer
-- cmake --build vs2013-x86 --config Release --target installer
-- cmake --build vs2015-x64 --config Release --target installer
-- cmake --build vs2015-x86 --config Release --target installer
+- cmake --build build --config Release --target installer
 
 artifacts:
   - path: LuaVM*.exe
