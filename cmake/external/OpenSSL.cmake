@@ -1,7 +1,7 @@
 include(ExternalProject)
 
-set(OpenSSL_URL https://www.openssl.org/source/openssl-1.0.2j.tar.gz)
-set(OpenSSL_SHA256 e7aff292be21c259c6af26469c7a9b3ba26e9abaaffd325e3dccc9785256c431)
+set(OpenSSL_URL https://www.openssl.org/source/openssl-1.0.2k.tar.gz)
+set(OpenSSL_SHA256 6b3977c61f2aedf0f96367dcfb5c6e578cf37e7b8d913b4ecb6643c3cb88d8c0)
 set(OpenSSL_PREFIX ${CMAKE_INSTALL_PREFIX}/externals)
 
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
