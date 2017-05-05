@@ -2,7 +2,7 @@
 
 Lua Version Manager for Windows.
 
-* LuaVM is a simple installer contains prebuilt [Lua][] and [LuaJIT][] binaries with configured [LuaRocks][].
+* LuaVM is a simple installer contains prebuilt [Lua][] and [LuaJIT][] binaries with [LuaRocks][].
 * LuaVM is a command line tool make it easy switch between Lua versions.
 
 ## Install
@@ -44,7 +44,7 @@ For LuaJIT versions there is also `luajit.exe` in PATH.
 
 ### Prerequisites
 
-1. Install [Visual Studio](https://www.visualstudio.com/downloads/download-visual-studio-vs), Visual Studio 2015 or Visual Studio 2013 is recommended.
+1. Install [Visual Studio](https://www.visualstudio.com/downloads/download-visual-studio-vs), Visual Studio 2017 or Visual Studio 2015 is recommended.
 2. Install [CMake](https://cmake.org/).
 3. Install [InnoSetup](http://www.jrsoftware.org/isinfo.php) and make sure `iscc` is in your PATH.
 
@@ -64,18 +64,14 @@ cmake -H. -Bbuild -G"Visual Studio 14 2015 Win64"
 cmake --build build --config Release --target installer
 ```
 
-Where cmake generator can be one of:
+Where cmake generator may be one of:
 
-- Visual Studio 10 2010
-- Visual Studio 10 2010 Win64
-- Visual Studio 11 2012
-- Visual Studio 11 2012 Win64
 - Visual Studio 12 2013
 - Visual Studio 12 2013 Win64
 - Visual Studio 14 2015
 - Visual Studio 14 2015 Win64
-- Visual Studio 9 2008
-- Visual Studio 9 2008 Win64
+- Visual Studio 15 2017
+- Visual Studio 15 2017 Win64
 
 
 [Lua]: https://www.lua.org/
