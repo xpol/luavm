@@ -94,7 +94,7 @@ function test_env.execute_helper(command, print_command, env_variables)
    local final_command = ""
 
    if print_command then 
-      print("\n[EXECUTING]: " .. command)
+      print("[EXECUTING]: " .. command)
    end
 
    if env_variables then
@@ -285,7 +285,7 @@ end
 -- @param save_path string: path to directory, where to download rocks/rockspecs
 -- @return make_manifest boolean: true if new rocks downloaded
 local function download_rocks(urls, save_path)
-   local luarocks_repo = "https://www.luarocks.org"   
+   local luarocks_repo = "https://luarocks.org"
    local make_manifest = false
 
    for _, url in ipairs(urls) do
@@ -448,7 +448,6 @@ local function reset_environment(testing_paths, md5sums)
       test_env.remove_dir(testing_paths.testing_sys_tree)
       test_env.copy_dir(testing_paths.testing_sys_tree_copy, testing_paths.testing_sys_tree)
    end
-   print("\n[ENVIRONMENT RESET]")
 end
 
 local function create_paths(luaversion_full)
@@ -533,7 +532,9 @@ function test_env.setup_specs(extra_rocks)
    end
 end
 
---- Test if required rock is installed if not, install it
+--- Test if required rock is installed and if not, install it.
+-- Return `true` if the rock is already installed or has been installed successfully,
+-- `false` if installation failed.
 function test_env.need_rock(rock)
    print("Check if " .. rock .. " is installed")
    if test_env.run.luarocks_noprint_nocov(test_env.quiet("show " .. rock)) then

@@ -209,12 +209,12 @@ end
 local function delete_suffixed(file, suffix)
    local suffixed_file, err = find_suffixed(file, suffix)
    if not suffixed_file then
-      return nil, "Could not remove " .. file .. ": " .. err
+      return nil, "Could not remove " .. file .. ": " .. err, "not found"
    end
 
    fs.delete(suffixed_file)
    if fs.exists(suffixed_file) then
-      return nil, "Failed deleting " .. suffixed_file .. ": file still exists"
+      return nil, "Failed deleting " .. suffixed_file .. ": file still exists", "fail"
    end
 
    return true
@@ -226,8 +226,9 @@ end
 -- item from the newest version of lexicographically smallest package
 -- is deployed using non-versioned name and others use versioned names.
 
-local function get_deploy_paths(name, version, deploy_type, file_path)
-   local deploy_dir = cfg["deploy_" .. deploy_type .. "_dir"]
+local function get_deploy_paths(name, version, deploy_type, file_path, repo)
+   repo = repo or cfg.root_dir
+   local deploy_dir = path["deploy_" .. deploy_type .. "_dir"](repo)
    local non_versioned = dir.path(deploy_dir, file_path)
    local versioned = path.versioned_name(non_versioned, deploy_dir, name, version)
    return non_versioned, versioned
@@ -374,8 +375,14 @@ function repos.delete_version(name, version, deps_mode, quick)
             target = versioned
          end
 
-         local ok, err = delete_suffixed(target, suffix)
-         if not ok then return nil, err end
+         local ok, err, err_type = delete_suffixed(target, suffix)
+         if not ok then
+            if err_type == "not found" then
+               util.warning(err)
+            else
+               return nil, err
+            end
+         end
 
          if not quick and target == non_versioned then
             -- If another package provides this file, move its version
@@ -417,6 +424,28 @@ function repos.delete_version(name, version, deps_mode, quick)
    end
 
    return manif.remove_from_manifest(name, version, nil, deps_mode)
+end
+
+--- Find full path to a file providing a module or a command
+-- in a package.
+-- @param name string: name of package.
+-- @param version string: exact package version in string format.
+-- @param item_type string: "module" or "command".
+-- @param item_name string: module or command name.
+-- @param root string or nil: A local root dir for a rocks tree. If not given, the default is used.
+-- @return string: absolute path to the file providing given module
+-- or command.
+function repos.which(name, version, item_type, item_name, repo)
+   local deploy_type, file_path = manif.get_providing_file(name, version, item_type, item_name, repo)
+   local non_versioned, versioned = get_deploy_paths(name, version, deploy_type, file_path, repo)
+   local cur_name, cur_version = manif.get_current_provider(item_type, item_name)
+   local deploy_path = (name == cur_name and version == cur_version) and non_versioned or versioned
+
+   if deploy_type == "bin" and cfg.wrapper_suffix and cfg.wrapper_suffix ~= "" then
+      deploy_path = find_suffixed(deploy_path, cfg.wrapper_suffix) or deploy_path
+   end
+
+   return deploy_path
 end
 
 return repos
