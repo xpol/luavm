@@ -36,7 +36,7 @@ deploy:
   - provider: GitHub
     description: Release of v$(APPVEYOR_REPO_TAG_NAME)
     auth_token:
-      secure: 9u2iMRO2KmnGYYLq9tqm0su2eY3h9FprKV8600vkNsFVCcM0ukfaZuu6SDGb95a6
+      secure: 59S6QwHMgG9sXcr64kPOGB3ZZPJXwnID6XyPBB6zv2ncjNg3Mr6KElDBV+QXzVDP
     artifact: /LuaVM.+\.exe/
     draft: false
     prerelease: true
