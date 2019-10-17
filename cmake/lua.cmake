@@ -9,7 +9,10 @@ function(add_lua)
 
   # Shared library
   add_library(lua-${add_lua_VERSION}.shared SHARED ${LIBRARY_FILES})
-  set_target_properties(lua-${add_lua_VERSION}.shared PROPERTIES OUTPUT_NAME lua${add_lua_ABI} COMPILE_DEFINITIONS LUA_BUILD_AS_DLL COMPILE_OPTIONS /wd4334)
+  set_target_properties(lua-${add_lua_VERSION}.shared PROPERTIES OUTPUT_NAME lua${add_lua_ABI})
+  if (MSVC)
+    set_target_properties(lua-${add_lua_VERSION}.shared COMPILE_DEFINITIONS LUA_BUILD_AS_DLL COMPILE_OPTIONS /wd4334)
+  endif()
 
   # Lua executable
   add_executable(lua-${add_lua_VERSION} ${add_lua_ROOT}/src/lua.c)
@@ -18,7 +21,10 @@ function(add_lua)
 
   # Luac executable
   add_executable(luac-${add_lua_VERSION} ${LUAC_FILES})
-  set_target_properties(luac-${add_lua_VERSION} PROPERTIES OUTPUT_NAME luac COMPILE_OPTIONS /wd4334)
+  set_target_properties(luac-${add_lua_VERSION} PROPERTIES OUTPUT_NAME luac)
+  if (MSVC)
+    set_target_properties(lua-${add_lua_VERSION} COMPILE_OPTIONS /wd4334)
+  endif()
 
   # Config luarocks for this Lua version.
   # # config_luarocks(${add_lua_VERSION} lua.exe lua${add_lua_ABI}.lib)
@@ -32,6 +38,8 @@ function(add_lua)
     RUNTIME_OUTPUT_DIRECTORY_RELEASE "${PREFIX}"
   )
   install(FILES ${LUA_HEADERS} DESTINATION "${PREFIX}/include")
+  install(FILES ${add_lua_ROOT}/README DESTINATION "${PREFIX}")
+  install(DIRECTORY ${add_lua_ROOT}/doc DESTINATION "${PREFIX}")
 endfunction()
 
 # add_jit(VERSION 2.0 ABI 51 ROOT path/to/luajit)
