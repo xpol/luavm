@@ -16,3 +16,16 @@ jobs:
       run: |
         cmake -H. -Bbuild
         cmake --build build --config Release --target install
+    - uses: actions/upload-artifact@v1
+      with:
+        name: lua-5.1
+        path: build/install/versions/5.1
+    - uses: actions/upload-artifact@v1
+      with:
+        name: lua-5.2
+        path: build/install/versions/5.2
+    - uses: actions/upload-artifact@v1
+      with:
+        name: lua-5.3
+        path: build/install/versions/5.3
+

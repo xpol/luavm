@@ -11,7 +11,7 @@ function(add_lua)
   add_library(lua-${add_lua_VERSION}.shared SHARED ${LIBRARY_FILES})
   set_target_properties(lua-${add_lua_VERSION}.shared PROPERTIES OUTPUT_NAME lua${add_lua_ABI})
   if (MSVC)
-    set_target_properties(lua-${add_lua_VERSION}.shared COMPILE_DEFINITIONS LUA_BUILD_AS_DLL COMPILE_OPTIONS /wd4334)
+    set_target_properties(lua-${add_lua_VERSION}.shared PROPERTIES OUTPUT_NAME lua${add_lua_ABI} COMPILE_DEFINITIONS LUA_BUILD_AS_DLL COMPILE_OPTIONS /wd4334)
   endif()
 
   # Lua executable
@@ -23,7 +23,7 @@ function(add_lua)
   add_executable(luac-${add_lua_VERSION} ${LUAC_FILES})
   set_target_properties(luac-${add_lua_VERSION} PROPERTIES OUTPUT_NAME luac)
   if (MSVC)
-    set_target_properties(lua-${add_lua_VERSION} COMPILE_OPTIONS /wd4334)
+    set_target_properties(lua-${add_lua_VERSION} PROPERTIES OUTPUT_NAME luac COMPILE_OPTIONS /wd4334)
   endif()
 
   # Config luarocks for this Lua version.
