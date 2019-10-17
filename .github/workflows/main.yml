@@ -8,10 +8,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-2019, or windows-2016]
+        os: [windows-2019, windows-2016]
         
     steps:
 #    - uses: actions/checkout@v1
     - name: Run a multi-line script
       run: |
-        set
+        where /r "C:\Program Files (x86)\Microsoft Visual Studio" *.bat
