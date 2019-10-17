@@ -9,9 +9,10 @@ function(add_lua)
 
   # Shared library
   add_library(lua-${add_lua_VERSION}.shared SHARED ${LIBRARY_FILES})
-  set_target_properties(lua-${add_lua_VERSION}.shared PROPERTIES OUTPUT_NAME lua${add_lua_ABI})
   if (MSVC)
     set_target_properties(lua-${add_lua_VERSION}.shared PROPERTIES OUTPUT_NAME lua${add_lua_ABI} COMPILE_DEFINITIONS LUA_BUILD_AS_DLL COMPILE_OPTIONS /wd4334)
+  else()
+    set_target_properties(lua-${add_lua_VERSION}.shared PROPERTIES OUTPUT_NAME lua${add_lua_ABI})
   endif()
 
   # Lua executable
@@ -21,9 +22,10 @@ function(add_lua)
 
   # Luac executable
   add_executable(luac-${add_lua_VERSION} ${LUAC_FILES})
-  set_target_properties(luac-${add_lua_VERSION} PROPERTIES OUTPUT_NAME luac)
   if (MSVC)
-    set_target_properties(lua-${add_lua_VERSION} PROPERTIES OUTPUT_NAME luac COMPILE_OPTIONS /wd4334)
+    set_target_properties(luac-${add_lua_VERSION} PROPERTIES OUTPUT_NAME luac COMPILE_OPTIONS /wd4334)
+  else()
+    set_target_properties(luac-${add_lua_VERSION} PROPERTIES OUTPUT_NAME luac)
   endif()
 
   # Config luarocks for this Lua version.
@@ -31,11 +33,11 @@ function(add_lua)
 
   # Install files
   set(PREFIX "${CMAKE_INSTALL_PREFIX}/versions/${add_lua_VERSION}")
-  set_target_properties(lua-${add_lua_VERSION}.shared lua-${add_lua_VERSION} luac-${add_lua_VERSION}
-    PROPERTIES
-    ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${PREFIX}"
-    LIBRARY_OUTPUT_DIRECTORY_RELEASE "${PREFIX}"
-    RUNTIME_OUTPUT_DIRECTORY_RELEASE "${PREFIX}"
+  install(
+    TARGETS lua-${add_lua_VERSION}.shared lua-${add_lua_VERSION} luac-${add_lua_VERSION}
+    RUNTIME DESTINATION "${PREFIX}"
+    LIBRARY DESTINATION "${PREFIX}"
+    ARCHIVE DESTINATION "${PREFIX}"
   )
   install(FILES ${LUA_HEADERS} DESTINATION "${PREFIX}/include")
   install(FILES ${add_lua_ROOT}/README DESTINATION "${PREFIX}")
