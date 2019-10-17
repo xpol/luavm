@@ -11,7 +11,8 @@ jobs:
         os: [windows-2019, windows-2016]
         
     steps:
-#    - uses: actions/checkout@v1
+    - uses: actions/checkout@v1
     - name: Run a multi-line script
       run: |
-        where /r "C:\Program Files (x86)\Microsoft Visual Studio" *.bat
+        cmake -H. -Bbuild
+        cmake --build build --config Release --target install

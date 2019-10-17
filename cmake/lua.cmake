@@ -1,4 +1,4 @@
-include(cmake/luarocks.cmake)
+# include(cmake/luarocks.cmake)
 
 # add_lua(VERSION 5.1 ABI 51 ROOT path/to/lua)
 function(add_lua)
@@ -21,7 +21,7 @@ function(add_lua)
   set_target_properties(luac-${add_lua_VERSION} PROPERTIES OUTPUT_NAME luac COMPILE_OPTIONS /wd4334)
 
   # Config luarocks for this Lua version.
-  config_luarocks(${add_lua_VERSION} lua.exe lua${add_lua_ABI}.lib)
+  # # config_luarocks(${add_lua_VERSION} lua.exe lua${add_lua_ABI}.lib)
 
   # Install files
   set(PREFIX "${CMAKE_INSTALL_PREFIX}/versions/${add_lua_VERSION}")
@@ -60,7 +60,7 @@ function(add_jit)
     INSTALL_COMMAND ""
   )
 
-  config_luarocks(${LUA_VERSION} luajit.exe lua${add_luajit_ABI}.lib)
+  # config_luarocks(${LUA_VERSION} luajit.exe lua${add_luajit_ABI}.lib)
 
   # Install files
   set(PREFIX "${CMAKE_INSTALL_PREFIX}/versions/${LUA_VERSION}")
