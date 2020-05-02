@@ -1,4 +1,4 @@
-include(cmake/luarocks.cmake)
+# include(cmake/luarocks.cmake)
 
 # add_lua(VERSION 5.1 ABI 51 ROOT path/to/lua)
 function(add_lua)
@@ -9,7 +9,11 @@ function(add_lua)
 
   # Shared library
   add_library(lua-${add_lua_VERSION}.shared SHARED ${LIBRARY_FILES})
-  set_target_properties(lua-${add_lua_VERSION}.shared PROPERTIES OUTPUT_NAME lua${add_lua_ABI} COMPILE_DEFINITIONS LUA_BUILD_AS_DLL COMPILE_OPTIONS /wd4334)
+  if (MSVC)
+    set_target_properties(lua-${add_lua_VERSION}.shared PROPERTIES OUTPUT_NAME lua${add_lua_ABI} COMPILE_DEFINITIONS LUA_BUILD_AS_DLL COMPILE_OPTIONS /wd4334)
+  else()
+    set_target_properties(lua-${add_lua_VERSION}.shared PROPERTIES OUTPUT_NAME lua${add_lua_ABI})
+  endif()
 
   # Lua executable
   add_executable(lua-${add_lua_VERSION} ${add_lua_ROOT}/src/lua.c)
@@ -18,20 +22,26 @@ function(add_lua)
 
   # Luac executable
   add_executable(luac-${add_lua_VERSION} ${LUAC_FILES})
-  set_target_properties(luac-${add_lua_VERSION} PROPERTIES OUTPUT_NAME luac COMPILE_OPTIONS /wd4334)
+  if (MSVC)
+    set_target_properties(luac-${add_lua_VERSION} PROPERTIES OUTPUT_NAME luac COMPILE_OPTIONS /wd4334)
+  else()
+    set_target_properties(luac-${add_lua_VERSION} PROPERTIES OUTPUT_NAME luac)
+  endif()
 
   # Config luarocks for this Lua version.
-  config_luarocks(${add_lua_VERSION} lua.exe lua${add_lua_ABI}.lib)
+  # # config_luarocks(${add_lua_VERSION} lua.exe lua${add_lua_ABI}.lib)
 
   # Install files
   set(PREFIX "${CMAKE_INSTALL_PREFIX}/versions/${add_lua_VERSION}")
-  set_target_properties(lua-${add_lua_VERSION}.shared lua-${add_lua_VERSION} luac-${add_lua_VERSION}
-    PROPERTIES
-    ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${PREFIX}"
-    LIBRARY_OUTPUT_DIRECTORY_RELEASE "${PREFIX}"
-    RUNTIME_OUTPUT_DIRECTORY_RELEASE "${PREFIX}"
+  install(
+    TARGETS lua-${add_lua_VERSION}.shared lua-${add_lua_VERSION} luac-${add_lua_VERSION}
+    RUNTIME DESTINATION "${PREFIX}"
+    LIBRARY DESTINATION "${PREFIX}"
+    ARCHIVE DESTINATION "${PREFIX}"
   )
   install(FILES ${LUA_HEADERS} DESTINATION "${PREFIX}/include")
+  install(FILES ${add_lua_ROOT}/README DESTINATION "${PREFIX}")
+  install(DIRECTORY ${add_lua_ROOT}/doc DESTINATION "${PREFIX}")
 endfunction()
 
 # add_jit(VERSION 2.0 ABI 51 ROOT path/to/luajit)
@@ -60,7 +70,7 @@ function(add_jit)
     INSTALL_COMMAND ""
   )
 
-  config_luarocks(${LUA_VERSION} luajit.exe lua${add_luajit_ABI}.lib)
+  # config_luarocks(${LUA_VERSION} luajit.exe lua${add_luajit_ABI}.lib)
 
   # Install files
   set(PREFIX "${CMAKE_INSTALL_PREFIX}/versions/${LUA_VERSION}")
